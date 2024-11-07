@@ -1,25 +1,24 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Navbar from './components/Navbar';
+import { Stack } from '@mui/material';
+import AdminDashboard from './pages/AdminDashboard';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import AdminDashboardTeacher from './pages/AdminDashboardTeacher';
+import AdminDashboardStudents from './pages/AdminDashboardStudents';
+import AdminDashboardClasses from './pages/AdminDashboardClasses';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/dashboard' element={<AdminDashboard />} />
+        <Route path='/dashboard/teachers' element={<AdminDashboardTeacher />} />
+        <Route path='/dashboard/students' element={<AdminDashboardStudents />} />
+        <Route path='/dashboard/classes' element={<AdminDashboardClasses />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
