@@ -1,8 +1,9 @@
-import { Button, Divider, Stack } from '@mui/material'
+import { Button, Divider, IconButton, Stack } from '@mui/material'
 import Sidebar from '../components/Sidebar'
 import PageHeader from '../components/PageHeader'
 import Wrapper from '../components/Wrapper'
 import RenderTable from '../components/RenderTable'
+import { Add } from '@mui/icons-material'
 
 function AdminDashboardTeacher() {
     return (
@@ -21,9 +22,9 @@ function AdminDashboardTeacher() {
                 <PageHeader
                     title='Teachers'
                     actions={
-                        <Button variant='contained' >
-                            Add a Teacher
-                        </Button>
+                        <IconButton>
+                            <Add sx={{ color: 'primary.contrastText' }} />
+                        </IconButton>
                     }
                 />
 
@@ -31,6 +32,15 @@ function AdminDashboardTeacher() {
                     tableLabels={['#', 'Name', 'Program', 'Class']}
                     tableData={[]}
                 />
+
+            </Stack>
+
+            <Stack
+                p={4}
+                border={'1px solid'}
+                borderColor={'primary.contrastText'}
+                borderRadius={3}
+            >
 
             </Stack>
 
