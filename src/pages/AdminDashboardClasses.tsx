@@ -1,18 +1,36 @@
-import { Stack, Typography } from '@mui/material'
+import { Button, Divider, Stack, Typography } from '@mui/material'
 import React from 'react'
 import Sidebar from '../components/Sidebar'
+import Wrapper from '../components/Wrapper'
+import PageHeader from '../components/PageHeader'
 
 function AdminDashboardClasses() {
     return (
-        <Stack flexGrow={1} gap={3}>
+        <Wrapper>
+
             <Sidebar />
 
-            <Stack flexGrow={1} alignItems={'center'} justifyContent={'center'}>
-                <Typography variant='h3'>
-                    Classes
-                </Typography>
+            <Stack flexGrow={1} gap={2} p={2}>
+
+                <Stack alignItems={'end'}>
+                    <Button sx={{ width: 'fit-content' }} variant='contained' color='error'>
+                        Logout
+                    </Button>
+                </Stack>
+                <Divider />
+
+                <PageHeader
+                    title='Classes'
+                    actions={
+                        <Button variant='contained' >
+                            Add a Class
+                        </Button>
+                    }
+                />
+
             </Stack>
-        </Stack>
+
+        </Wrapper>
     )
 }
 

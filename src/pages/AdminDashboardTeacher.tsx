@@ -1,18 +1,43 @@
-import { Stack, Typography } from '@mui/material'
+import { Button, Divider, Stack, Typography } from '@mui/material'
 import React from 'react'
 import Sidebar from '../components/Sidebar'
+import { Add } from '@mui/icons-material'
+import PageHeader from '../components/PageHeader'
+import Wrapper from '../components/Wrapper'
+import RenderTable from '../components/RenderTable'
 
 function AdminDashboardTeacher() {
     return (
-        <Stack flexGrow={1} gap={3}>
+        <Wrapper>
+
             <Sidebar />
 
-            <Stack flexGrow={1} alignItems={'center'} justifyContent={'center'}>
-                <Typography variant='h3'>
-                    Teachers
-                </Typography>
+            <Stack flexGrow={1} gap={2} p={2}>
+                <Stack alignItems={'end'}>
+                    <Button sx={{ width: 'fit-content' }} variant='contained' color='error'>
+                        Logout
+                    </Button>
+                </Stack>
+                <Divider />
+
+                <PageHeader
+                    title='Teachers'
+                    actions={
+                        <Button variant='contained' >
+                            Add a Teacher
+                        </Button>
+                    }
+                />
+
+                <RenderTable
+                    tableLabels={['#', 'Name', 'Program', 'Class']}
+                    tableData={[]}
+                />
+
             </Stack>
-        </Stack>
+
+        </Wrapper>
+
     )
 }
 

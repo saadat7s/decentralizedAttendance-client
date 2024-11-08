@@ -1,21 +1,22 @@
-import { Home, Image, MeetingRoom, RecordVoiceOver, School } from '@mui/icons-material'
-import { Divider, MenuItem, Stack, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import { Home, MeetingRoom, RecordVoiceOver, School } from '@mui/icons-material'
+import { Divider, Stack, Typography } from '@mui/material'
+
 import NavItem from './NavItem'
-const logo = '/logo192.png'
 
 
 function Sidebar() {
     return (
-        <Stack gap={2} width={'30vw'} position={'fixed'} height={'100%'} bgcolor={'secondary.main'}>
+        <Stack
+            gap={2}
+            width={'30vw'}
+            height={'100%'}
+            bgcolor={'secondary.main'}
+            position={'relative'}
+        >
             <Stack alignItems={'center'} p={3} >
-                <Image
-                    href={logo}
-                    sx={{
-                        width: 100,
-                        height: 100
-                    }}
-                />
+                <Stack overflow={'hidden'}>
+                    <img src='/logo192.png' alt='logo' style={{ maxWidth: 100, maxHeight: 'auto' }} />
+                </Stack>
                 <Typography variant='h6' color='primary.contrastText'>
                     Username
                 </Typography>
@@ -31,6 +32,7 @@ function Sidebar() {
                 <NavItem link={'/dashboard/classes'} label={'Classes'} icon={<MeetingRoom />} />
 
             </Stack>
+
         </Stack >
     )
 }

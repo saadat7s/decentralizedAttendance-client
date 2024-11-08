@@ -2,7 +2,6 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/Navbar';
-import { Stack } from '@mui/material';
 import AdminDashboard from './pages/AdminDashboard';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import AdminDashboardTeacher from './pages/AdminDashboardTeacher';

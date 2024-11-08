@@ -12,20 +12,28 @@ function NavItem({ link, label, icon }: { link: string, label: string, icon: Rea
         <MenuItem
             onClick={() => navigate(link)}
             sx={{
-                borderRadius: 1,
                 color: 'primary.contrastText',
                 bgcolor: activePath ? 'primary.main' : '',
                 py: 1,
                 border: '1px solid',
                 borderColor: 'transparent',
+                borderRadius: 3,
                 ":hover": {
                     border: '1px solid',
                     borderColor: 'primary.contrastText',
                     bgcolor: 'primary.main'
                 },
                 transition: 'all 0.2s ease'
-            }}>
-            <Stack alignItems={'center'} justifyContent={'start'} flexGrow={1} direction={'row'} gap={2}>
+            }}
+        >
+            <Stack
+
+                alignItems={'center'}
+                justifyContent={'start'}
+                flexGrow={1}
+                direction={'row'}
+                gap={2}
+            >
                 {icon}
                 <Typography>
                     {label}
