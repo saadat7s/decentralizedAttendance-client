@@ -1,0 +1,19 @@
+import React from 'react'
+import Sidebar from '../components/Sidebar'
+import NavItem from '../components/NavItem'
+import { Home, MeetingRoom, RecordVoiceOver, School } from '@mui/icons-material'
+
+function AdminSidebar() {
+    return (
+        <Sidebar
+            username='Admin'
+        >
+            <NavItem link={'/admin/dashboard'} label={'Dashboard'} icon={<Home />} />
+            <NavItem link={'/admin/dashboard/students'} label={'Students'} icon={<School />} />
+            <NavItem link={'/admin/dashboard/teachers'} label={'Teachers'} icon={<RecordVoiceOver />} />
+            <NavItem link={'/admin/dashboard/classes'} label={'Classes'} icon={<MeetingRoom />} />
+        </Sidebar>
+    )
+}
+
+export default AdminSidebar

@@ -1,23 +1,28 @@
 import { Button, Stack, Typography } from '@mui/material'
 import React from 'react'
 
-function PageHeader({ title, actions }: { title: string, actions: React.ReactNode | null }) {
+function PageHeader({ actions }: { actions: React.ReactNode | null }) {
     return (
-        <Stack
-            bgcolor={'secondary.main'}
-            p={3}
-            borderRadius={4}
-            direction={'row'}
-            gap={1}
-            justifyContent={'space-between'}
-        >
-            <Typography variant='h4' color='primary.contrastText'>
-                {title}
-            </Typography>
+        <Stack direction={'row'} width={'100%'} gap={2} justifyContent={'space-between'}>
 
-            <Stack direction={'row'} gap={1}>
-                {actions}
+            <Stack
+                borderRadius={4}
+                direction={'row'}
+                gap={1}
+                justifyContent={'space-between'}
+            >
+
+                <Stack direction={'row'} gap={1}>
+                    {actions}
+                </Stack>
             </Stack>
+
+            <Stack alignItems={'end'}>
+                <Button sx={{ width: 'fit-content' }} variant='contained' color='error'>
+                    Logout
+                </Button>
+            </Stack>
+
         </Stack>
     )
 }

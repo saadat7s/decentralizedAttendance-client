@@ -11,10 +11,12 @@ const theme = createTheme({
         secondary: {
             main: '#152259',
             "100": '#DCDCDC',
-            contrastText: 'black'
+            '200': '#4F4F4F',
+            '300': '#ebebed',
+            contrastText: '#4f4f4f'
         },
         background: {
-            default: '#ffffff',
+            default: '#fcfafa',
             paper: '#ffffff',
         }
     },
@@ -22,7 +24,7 @@ const theme = createTheme({
         MuiButton: {
             defaultProps: {
                 style: {
-                    borderRadius: 12
+                    borderRadius: 5
                 }
             }
         }

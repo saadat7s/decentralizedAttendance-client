@@ -4,11 +4,10 @@ import { Divider, Stack, Typography } from '@mui/material'
 import NavItem from './NavItem'
 
 
-function Sidebar() {
+function Sidebar({ username, children }: { username: string, children: React.ReactNode }) {
     return (
         <Stack
             gap={2}
-            width={'30vw'}
             height={'100%'}
             bgcolor={'secondary.main'}
             position={'relative'}
@@ -18,19 +17,14 @@ function Sidebar() {
                     <img src='/logo192.png' alt='logo' style={{ maxWidth: 100, maxHeight: 'auto' }} />
                 </Stack>
                 <Typography variant='h6' color='primary.contrastText'>
-                    Username
+                    {username}
                 </Typography>
             </Stack>
 
             <Divider sx={{ borderColor: 'primary.contrastText' }} />
 
             <Stack gap={1} px={5}>
-
-                <NavItem link={'/dashboard'} label={'Dashboard'} icon={<Home />} />
-                <NavItem link={'/dashboard/teachers'} label={'Teachers'} icon={<RecordVoiceOver />} />
-                <NavItem link={'/dashboard/students'} label={'Students'} icon={<School />} />
-                <NavItem link={'/dashboard/classes'} label={'Classes'} icon={<MeetingRoom />} />
-
+                {children}
             </Stack>
 
         </Stack >
