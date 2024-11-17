@@ -1,8 +1,14 @@
 import { FormikErrors, useFormik } from 'formik';
-import React from 'react';
 import LoginForm from '../LoginForm';
+import React, { useEffect } from 'react';
 import { Stack, Typography } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { adminLogin } from '../../redux/features/adminSlice';
+
+
+
 
 interface AdminLoginValues {
     email: string;
@@ -10,6 +16,9 @@ interface AdminLoginValues {
 }
 
 function AdminLogin() {
+    const { isAuthenticated, userProfile } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate();
     const formik = useFormik<AdminLoginValues>({
         initialValues: {
             email: '',
@@ -38,13 +47,16 @@ function AdminLogin() {
         },
         onSubmit: (values, { setSubmitting }) => {
             console.log('Form Submitted:', values);
-            // Simulating async request
-            setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
-                setSubmitting(false);
-            }, 400);
+            dispatch(adminLogin(values))
         },
     });
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            if (userProfile?.role === 'admin')
+                navigate('/admin/dashboard')
+        }
+    }, [isAuthenticated])
 
     return (
         <LoginForm
