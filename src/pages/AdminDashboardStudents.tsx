@@ -2,24 +2,21 @@ import { Button, Divider, Stack, } from '@mui/material'
 import Sidebar from '../components/Sidebar'
 import Wrapper from '../components/Wrapper'
 import PageHeader from '../components/PageHeader'
+import { useNavigate } from 'react-router-dom'
+import AdminSidebar from './AdminSidebar'
 
 function AdminDashboardStudents() {
+    const navigate = useNavigate();
     return (
         <Wrapper>
 
-            <Sidebar />
+            <AdminSidebar />
 
-            <Stack flexGrow={1} gap={2} p={2}>
-                <Stack alignItems={'end'}>
-                    <Button sx={{ width: 'fit-content' }} variant='contained' color='error'>
-                        Logout
-                    </Button>
-                </Stack>
-                <Divider />
+            <Stack flexGrow={1} py={2} px={4}>
+
                 <PageHeader
-                    title='Students'
                     actions={
-                        <Button variant='contained' >
+                        <Button variant='contained' onClick={() => navigate('./add-student')} >
                             Add a Student
                         </Button>
                     }

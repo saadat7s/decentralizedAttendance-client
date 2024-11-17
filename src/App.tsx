@@ -8,6 +8,13 @@ import AdminDashboardStudents from './pages/AdminDashboardStudents';
 import AdminDashboardClasses from './pages/AdminDashboardClasses';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import Register from './components/Register';
+import AdminLogin from './components/AdminLogin';
+import AdminAddTeacher from './pages/AdminAddTeacher';
+import AdminAddStudent from './pages/AdminAddStudent';
+import AdminAddClass from './pages/AdminAddClass';
+import TeacherHome from './pages/TeacherHome';
+import StudentHome from './components/Student/StudentHome';
 
 
 function App() {
@@ -17,10 +24,28 @@ function App() {
       {/* react router dom */}
       <BrowserRouter>
         <Routes>
-          <Route path='/dashboard' element={<AdminDashboard />} />
-          <Route path='/dashboard/teachers' element={<AdminDashboardTeacher />} />
-          <Route path='/dashboard/students' element={<AdminDashboardStudents />} />
-          <Route path='/dashboard/classes' element={<AdminDashboardClasses />} />
+
+          {/* admin routes */}
+          <Route path='/admin/dashboard' element={<AdminDashboard />} />
+          <Route path='/admin/dashboard/teachers' element={<AdminDashboardTeacher />} />
+          <Route path='/admin/dashboard/teachers/add-teacher' element={<AdminAddTeacher />} />
+          <Route path='/admin/dashboard/students' element={<AdminDashboardStudents />} />
+          <Route path='/admin/dashboard/students/add-student' element={<AdminAddStudent />} />
+          <Route path='/admin/dashboard/classes' element={<AdminDashboardClasses />} />
+          <Route path='/admin/dashboard/classes/add-class' element={<AdminAddClass />} />
+
+          <Route path='/admin/login' element={<AdminLogin />} />
+
+
+          <Route path='/teacher/home' element={<TeacherHome />} />
+          <Route path='/teacher/details' element={<TeacherHome />} />
+          <Route path='/teacher/students' element={<TeacherHome />} />
+
+          <Route path='/student/home' element={<StudentHome />} />
+          <Route path='/student/reports' element={<TeacherHome />} />
+
+
+          <Route path='/signup' element={<Register />} />
         </Routes>
       </BrowserRouter>
     </Provider>

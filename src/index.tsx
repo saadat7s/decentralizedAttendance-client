@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import theme from './theme';
 import { ThemeProvider } from '@mui/material';
+import { Toaster } from 'react-hot-toast';
 
 
 const root = ReactDOM.createRoot(
@@ -12,6 +13,7 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <Toaster />
     <ThemeProvider theme={theme}>
       <App />
     </ThemeProvider>

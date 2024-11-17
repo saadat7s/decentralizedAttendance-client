@@ -3,7 +3,7 @@ import React from 'react'
 
 function Wrapper({ children }: { children: React.ReactNode }) {
     return (
-        <Stack direction={'row'} gap={3} width={'100vw'} height={'100vh'}>
+        <Stack direction={'row'} width={'100vw'} height={'100vh'}>
             {children}
         </Stack>
     )

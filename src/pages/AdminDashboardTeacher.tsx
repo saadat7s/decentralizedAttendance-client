@@ -4,27 +4,27 @@ import PageHeader from '../components/PageHeader'
 import Wrapper from '../components/Wrapper'
 import RenderTable from '../components/RenderTable'
 import { Add } from '@mui/icons-material'
+import { useState } from 'react'
+import SimpleModal from '../components/SimpleModal'
+import { useNavigate } from 'react-router-dom'
+import AdminSidebar from './AdminSidebar'
 
 function AdminDashboardTeacher() {
+    const navigate = useNavigate()
+
     return (
         <Wrapper>
 
-            <Sidebar />
+            <AdminSidebar />
 
-            <Stack flexGrow={1} gap={2} p={2}>
-                <Stack alignItems={'end'}>
-                    <Button sx={{ width: 'fit-content' }} variant='contained' color='error'>
-                        Logout
-                    </Button>
-                </Stack>
-                <Divider />
+            <Stack flexGrow={1} py={2} px={4}>
+
 
                 <PageHeader
-                    title='Teachers'
                     actions={
-                        <IconButton>
-                            <Add sx={{ color: 'primary.contrastText' }} />
-                        </IconButton>
+                        <Button variant='contained' onClick={() => navigate('./add-teacher')}>
+                            Add Teacher
+                        </Button>
                     }
                 />
 
@@ -32,15 +32,6 @@ function AdminDashboardTeacher() {
                     tableLabels={['#', 'Name', 'Program', 'Class']}
                     tableData={[]}
                 />
-
-            </Stack>
-
-            <Stack
-                p={4}
-                border={'1px solid'}
-                borderColor={'primary.contrastText'}
-                borderRadius={3}
-            >
 
             </Stack>
 
