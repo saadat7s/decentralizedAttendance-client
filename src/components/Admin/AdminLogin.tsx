@@ -1,6 +1,6 @@
 import { FormikErrors, useFormik } from 'formik';
 import React from 'react';
-import LoginForm from './LoginForm';
+import LoginForm from '../LoginForm';
 import { Stack, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 

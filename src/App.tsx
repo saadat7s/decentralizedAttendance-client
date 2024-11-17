@@ -9,7 +9,7 @@ import AdminDashboardClasses from './pages/AdminDashboardClasses';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import Register from './components/Register';
-import AdminLogin from './components/AdminLogin';
+import AdminLogin from './components/Admin/AdminLogin';
 import AdminAddTeacher from './pages/AdminAddTeacher';
 import AdminAddStudent from './pages/AdminAddStudent';
 import AdminAddClass from './pages/AdminAddClass';

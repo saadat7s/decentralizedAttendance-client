@@ -114,7 +114,7 @@ function AddStudent({ formik }: { formik: any }) {
                         variant='filled'
                         name='admissionYear'
                         label='Admission Year'
-                        placeholder='Computer 2022'
+                        placeholder='2022'
                         onChange={formik.handleChange}
                         error={formik.touched.admissionYear && Boolean(formik.errors.admissionYear)}
                         helperText={formik.touched.admissionYear && formik.errors.admissionYear}

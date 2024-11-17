@@ -24,6 +24,7 @@ function Sidebar({ username, children }: { username: string, children: React.Rea
             <Divider sx={{ borderColor: 'primary.contrastText' }} />
 
             <Stack gap={1} px={5}>
+                {/* all the nav items */}
                 {children}
             </Stack>
 

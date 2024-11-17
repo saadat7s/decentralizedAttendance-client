@@ -3,7 +3,16 @@ import React from 'react'
 
 function PageHeader({ actions }: { actions: React.ReactNode | null }) {
     return (
-        <Stack direction={'row'} width={'100%'} gap={2} justifyContent={'space-between'}>
+        <Stack
+            direction={'row'}
+            gap={2}
+            py={2}
+            px={4}
+            borderRadius={2}
+            // bgcolor={'secondary.100'}
+            // boxShadow={2}
+            justifyContent={'space-between'}
+        >
 
             <Stack
                 borderRadius={4}

@@ -7,6 +7,10 @@ import Sidebar from '../components/Sidebar'
 import { FormikErrors, useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import AdminSidebar from './AdminSidebar'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../redux/store'
+import { registerStudent } from '../redux/features/adminSlice'
+import toast from 'react-hot-toast'
 
 
 interface StudentForm {
@@ -23,6 +27,7 @@ interface StudentForm {
 
 function AdminAddStudent() {
     const navigation = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
 
     const formik = useFormik<StudentForm>({
         initialValues: {
@@ -69,7 +74,14 @@ function AdminAddStudent() {
             return errors;
         },
         onSubmit(values, formikHelpers) {
-            console.log(values)
+            toast.promise(
+                dispatch(registerStudent(values))
+                    .unwrap(), {
+                loading: 'Loading...',
+                success: 'Student registered successfully.',
+                error: 'Could not register a student.'
+            }
+            )
         },
     })
 

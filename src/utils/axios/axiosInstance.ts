@@ -20,30 +20,32 @@ const axiosInstance = axios.create({
     }
 })
 
-axiosInstance.interceptors.request.use(async (req) => {
-    const token = localStorage.getItem('x_auth_token');
+// TODO: enable interceptors after authentication implementation
 
-    if (!token || isTokenExpired(token)) {
-        console.error('No valid token found.');
-        //TODO: Redirect to login page
-        //TODO: Block the request
-        return Promise.reject('No valid token found.');
-    }
+// axiosInstance.interceptors.request.use(async (req) => {
+//     const token = localStorage.getItem('x_auth_token');
 
-    req.headers['x_auth_token'] = token;
-    return req;
-}, error => {
-    return Promise.reject(error);
-});
+//     if (!token || isTokenExpired(token)) {
+//         console.error('No valid token found.');
+//         //TODO: Redirect to login page
+//         //TODO: Block the request
+//         return Promise.reject('No valid token found.');
+//     }
 
-axiosInstance.interceptors.response.use(
-    response => response.data,
-    error => {
-        if (error.response && error.response.status === 401) {
-            console.error('Unauthorized.');
-        }
-        return Promise.reject(error.response?.data || 'An unknown error occurred');
-    }
-);
+//     req.headers['x_auth_token'] = token;
+//     return req;
+// }, error => {
+//     return Promise.reject(error);
+// });
+
+// axiosInstance.interceptors.response.use(
+//     response => response.data,
+//     error => {
+//         if (error.response && error.response.status === 401) {
+//             console.error('Unauthorized.');
+//         }
+//         return Promise.reject(error.response?.data || 'An unknown error occurred');
+//     }
+// );
 
 export default axiosInstance;

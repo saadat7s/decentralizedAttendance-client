@@ -1,7 +1,5 @@
 import { Button, Stack, TextField, Typography } from '@mui/material'
-import { Formik, FormikValues } from 'formik'
 import React from 'react'
-import { Link } from 'react-router-dom';
 
 function LoginForm({ title, subtitle, formik, actions }: { title: string, subtitle: string | null, formik: any, actions: React.ReactNode }) {
     return (
@@ -20,6 +18,9 @@ function LoginForm({ title, subtitle, formik, actions }: { title: string, subtit
 
             <Stack
                 bgcolor={'background.paper'}
+                border={'1px solid'}
+                borderColor={'secondary.100'}
+                borderRadius={3}
                 p={10}
                 maxWidth={600}
                 gap={3}

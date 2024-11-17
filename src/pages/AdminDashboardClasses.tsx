@@ -4,6 +4,7 @@ import Wrapper from '../components/Wrapper'
 import PageHeader from '../components/PageHeader'
 import { useNavigate } from 'react-router-dom'
 import AdminSidebar from './AdminSidebar'
+import RenderTable from '../components/RenderTable'
 
 function AdminDashboardClasses() {
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ function AdminDashboardClasses() {
 
             <AdminSidebar />
 
-            <Stack flexGrow={1} py={2} px={4}>
+            <Stack flexGrow={1} gap={2} py={2} px={4}>
 
                 <PageHeader
                     actions={
@@ -22,6 +23,13 @@ function AdminDashboardClasses() {
                     }
                 />
 
+                <Divider />
+
+                <RenderTable
+                    tableLabels={['#', 'Course Name', 'Course ID', 'Teacher', 'Students']}
+                    tableData={[]}
+
+                />
             </Stack>
 
         </Wrapper>

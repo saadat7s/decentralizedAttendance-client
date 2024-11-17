@@ -17,7 +17,7 @@ function AdminDashboardTeacher() {
 
             <AdminSidebar />
 
-            <Stack flexGrow={1} py={2} px={4}>
+            <Stack flexGrow={1} gap={2} py={2} px={4}>
 
 
                 <PageHeader
@@ -27,6 +27,8 @@ function AdminDashboardTeacher() {
                         </Button>
                     }
                 />
+
+                <Divider />
 
                 <RenderTable
                     tableLabels={['#', 'Name', 'Program', 'Class']}
