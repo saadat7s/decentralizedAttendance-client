@@ -5,19 +5,24 @@ import PageHeader from '../components/PageHeader'
 import { AccountBalance, CastForEducation, Face2, School } from '@mui/icons-material'
 import EmptyDashboardCard from '../components/EmptyDashboardCard'
 import AdminSidebar from './AdminSidebar'
+import { useSelector } from 'react-redux'
+import { RootState } from '../redux/store'
+import withAuth from '../utils/withAuth'
 
 function AdminDashboard() {
+    const { userProfile } = useSelector((state: RootState) => state.user)
     return (
         <Wrapper>
 
             <AdminSidebar />
 
             <Stack p={2} gap={2}>
-
                 <Stack alignItems={'end'}>
-                    <Button sx={{ width: 'fit-content' }} variant='contained' color='error'>
-                        Logout
-                    </Button>
+                    {userProfile?.name &&
+                        <Button sx={{ width: 'fit-content' }} variant='contained' color='error'>
+                            Logout
+                        </Button>
+                    }
                 </Stack>
                 <Divider />
 
@@ -34,7 +39,7 @@ function AdminDashboard() {
                 >
                     <Stack>
                         <Typography variant='h4' color='secondary.200' fontWeight={'bold'}>
-                            Welcome to your dashboard, Admin
+                            Welcome to your dashboard, {userProfile?.name}
                         </Typography>
                     </Stack>
 
@@ -77,4 +82,4 @@ function AdminDashboard() {
     )
 }
 
-export default AdminDashboard
+export default withAuth(AdminDashboard)
