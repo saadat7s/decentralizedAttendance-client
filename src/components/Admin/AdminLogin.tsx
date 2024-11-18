@@ -5,7 +5,9 @@ import { Stack, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../redux/store';
-import { adminLogin } from '../../redux/features/adminSlice';
+import toast from 'react-hot-toast';
+import { userLogin } from '../../redux/features/authSlice';
+import { getUserProfile } from '../../redux/features/userSlice';
 
 
 
@@ -17,6 +19,7 @@ interface AdminLoginValues {
 
 function AdminLogin() {
     const { isAuthenticated, userProfile } = useSelector((state: RootState) => state.user);
+    const { error, message } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     const formik = useFormik<AdminLoginValues>({
@@ -47,11 +50,22 @@ function AdminLogin() {
         },
         onSubmit: (values, { setSubmitting }) => {
             console.log('Form Submitted:', values);
-            dispatch(adminLogin(values))
+            toast.promise(
+                dispatch(userLogin(values))
+                    .unwrap(), {
+                loading: 'Loading...',
+                success: 'Authenticated',
+                error: error
+            }
+            )
         },
     });
 
     useEffect(() => {
+        const token = localStorage.getItem('x_auth_token');
+        if (token) {
+            dispatch(getUserProfile());
+        }
         if (isAuthenticated) {
             if (userProfile?.role === 'admin')
                 navigate('/admin/dashboard')

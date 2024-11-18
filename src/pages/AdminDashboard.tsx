@@ -18,19 +18,12 @@ function AdminDashboard() {
 
             <Stack p={2} gap={2} flexGrow={1}>
 
-                <Stack alignItems={'end'}>
-                    {userProfile?.name &&
-                        <Button sx={{ width: 'fit-content' }} variant='contained' color='error'>
-                            Logout
-                        </Button>
+                <PageHeader
+                    actions={
+                        null
                     }
-                </Stack>
+                />
                 <Divider />
-
-                {/* <PageHeader
-                    actions={null}
-                    title='Dashboard'
-                /> */}
 
                 <Stack
                     direction={'row'}

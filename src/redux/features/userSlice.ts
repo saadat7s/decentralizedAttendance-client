@@ -6,7 +6,7 @@ const initialState = {
     userProfile: <any>{},
 
     isAuthenticated: false,
-
+    token: '',
     loading: false,
     message: '',
     error: ''
@@ -16,13 +16,14 @@ export const getUserProfile = createAsyncThunk<any, void, { rejectValue: { messa
     'user/getUserProfile',
     async (_, { rejectWithValue }) => {
         try {
-            const response = axiosInstance('/auth/get-user-profile');
+            const response = axiosInstance.get('/auth/login/user-profile');
             return response;
         } catch (error: any) {
             return rejectWithValue({ message: error?.message })
         }
     }
 )
+
 
 const userSlice = createSlice({
     name: 'user',
@@ -34,6 +35,9 @@ const userSlice = createSlice({
                 state.isAuthenticated = true;
             }
         },
+        setAuthenticated: (state, action) => {
+            state.isAuthenticated = action.payload;
+        }
     },
     extraReducers(builder) {
         // get user profile builder
@@ -41,7 +45,7 @@ const userSlice = createSlice({
             state.loading = true;
         })
         builder.addCase(getUserProfile.fulfilled, (state, action) => {
-            state.userProfile = action.payload.data?.user
+            state.userProfile = action.payload?.user
             state.isAuthenticated = true;
             state.loading = false;
         })
@@ -53,4 +57,4 @@ const userSlice = createSlice({
 })
 
 export default userSlice.reducer;
-export const { setUserProfile } = userSlice.actions;
+export const { setUserProfile, setAuthenticated } = userSlice.actions;

@@ -10,9 +10,7 @@ export default function withAuth(Component: any) {
     return function WithAuth(props: any) {
         const { isAuthenticated } = useSelector((state: RootState) => state.user)
         const dispatch = useDispatch<AppDispatch>();
-        const token = localStorage.getItem('x_auth_token');
-        let decoded: { id: string, role: string };
-        decoded = jwtDecode(token!);
+        const token: string | null = localStorage.getItem('x_auth_token');
         const navigate = useNavigate();
         useEffect(() => {
             console.log("ENDPOINT: ", process.env.REACT_APP_ENDPOINT)
@@ -26,6 +24,9 @@ export default function withAuth(Component: any) {
         }, [token])
         if (isAuthenticated) {
             return <Component {...props} />
+        }
+        if (!token && !isAuthenticated) {
+            navigate('/admin/login')
         }
         return null;
     }

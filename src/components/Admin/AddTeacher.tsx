@@ -25,12 +25,12 @@ function AddTeacher({ formik }: { formik: any }) {
                 <TextField
                     fullWidth
                     variant='filled'
-                    name='fullName'
+                    name='name'
                     label='Full Name'
                     placeholder='Jhon Doe'
                     onChange={formik.handleChange}
-                    error={Boolean(formik.touched.fullName && formik.errors.fullName)}
-                    helperText={formik.touched.fullName && formik.errors.fullName}
+                    error={Boolean(formik.touched.name && formik.errors.name)}
+                    helperText={formik.touched.name && formik.errors.name}
                 />
                 <Stack direction={'row'} gap={2}>
 

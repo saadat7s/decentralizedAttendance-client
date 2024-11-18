@@ -27,9 +27,9 @@ function AdminDashboardClasses() {
 
                 <RenderTable
                     tableLabels={['#', 'Course Name', 'Course ID', 'Teacher', 'Students']}
-                    tableData={[]}
-
-                />
+                >
+                    {null}
+                </RenderTable>
             </Stack>
 
         </Wrapper>

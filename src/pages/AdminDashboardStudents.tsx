@@ -5,9 +5,22 @@ import PageHeader from '../components/PageHeader'
 import { useNavigate } from 'react-router-dom'
 import AdminSidebar from './AdminSidebar'
 import RenderTable from '../components/RenderTable'
+import { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../redux/store'
+import { getAllStudents } from '../redux/features/studentSlice'
+import withAuth from '../utils/withAuth'
+import RenderStudentTableBody from '../components/RenderStudentTableBody'
 
 function AdminDashboardStudents() {
     const navigate = useNavigate();
+    const { students } = useSelector((state: RootState) => state.student);
+    const dispatch = useDispatch<AppDispatch>();
+    useEffect(() => {
+        if (students.length === 0) {
+            dispatch(getAllStudents())
+        }
+    }, [])
     return (
         <Wrapper>
 
@@ -27,8 +40,12 @@ function AdminDashboardStudents() {
 
                 <RenderTable
                     tableLabels={['#', 'Name', 'Roll No', 'Department', 'Semester', 'Program', 'Batch', 'Courses']}
-                    tableData={[]}
-                />
+                >
+
+                    <RenderStudentTableBody
+                        tableData={students}
+                    />
+                </RenderTable>
 
 
             </Stack>
@@ -38,4 +55,4 @@ function AdminDashboardStudents() {
     )
 }
 
-export default AdminDashboardStudents
+export default withAuth(AdminDashboardStudents)

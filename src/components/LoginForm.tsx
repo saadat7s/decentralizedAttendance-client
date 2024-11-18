@@ -1,7 +1,9 @@
-import { Button, Stack, TextField, Typography } from '@mui/material'
-import React from 'react'
+import { Visibility, VisibilityOff } from '@mui/icons-material'
+import { Button, IconButton, InputAdornment, OutlinedInput, Stack, TextField, Typography } from '@mui/material'
+import React, { useState } from 'react'
 
 function LoginForm({ title, subtitle, formik, actions }: { title: string, subtitle: string | null, formik: any, actions: React.ReactNode }) {
+    const [showPassword, setShowPassword] = useState(false);
     return (
         <Stack
             flexGrow={1}
@@ -11,6 +13,7 @@ function LoginForm({ title, subtitle, formik, actions }: { title: string, subtit
             bgcolor={'background.default'}
             justifyContent={'center'}
             alignItems={'center'}
+
         >
             <Typography variant='h5' fontWeight={'bold'} color={'secondary.contrastText'}>
                 {title}
@@ -24,6 +27,7 @@ function LoginForm({ title, subtitle, formik, actions }: { title: string, subtit
                 p={10}
                 maxWidth={600}
                 gap={3}
+                boxShadow={20}
             >
 
                 <Typography>{subtitle}</Typography>
@@ -46,21 +50,29 @@ function LoginForm({ title, subtitle, formik, actions }: { title: string, subtit
                                 error={formik.touched.email && Boolean(formik.errors.email)}
                                 helperText={formik.touched.email && formik.errors.email}
                             />
-                            {formik.errors.email && formik.touched.email && formik.errors.email}
 
                             <TextField
                                 variant='filled'
                                 name='password'
-                                type='password'
+                                label="Password"
+                                type={showPassword ? 'text' : 'password'}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 value={formik.values.password}
-                                label="Password"
                                 error={formik.touched.password && Boolean(formik.errors.password)}
                                 helperText={formik.touched.password && formik.errors.password}
+                                slotProps={{
+                                    input: {
+                                        endAdornment: (
+                                            <InputAdornment position='end'>
+                                                <IconButton onClick={() => setShowPassword(!showPassword)}>
+                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                </IconButton>
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }}
                             />
-                            {formik.errors.password && formik.touched.password && formik.errors.password}
-
                         </Stack>
 
                         {/* buttons */}

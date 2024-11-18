@@ -14,7 +14,7 @@ import toast from 'react-hot-toast'
 
 
 interface StudentForm {
-    fullName: string,
+    name: string,
     email: string,
     password: string,
     rollNumber: number,
@@ -31,7 +31,7 @@ function AdminAddStudent() {
 
     const formik = useFormik<StudentForm>({
         initialValues: {
-            fullName: '',
+            name: '',
             email: '',
             password: '',
             rollNumber: 0,
@@ -43,13 +43,13 @@ function AdminAddStudent() {
         },
         validate(values) {
             const errors: FormikErrors<StudentForm> = {};
-            if (!values.fullName) {
-                errors.fullName = 'Full Name cannot be empty.'
+            if (!values.name) {
+                errors.name = 'Full Name cannot be empty.'
             }
             if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
                 errors.email = 'A valid email is required.'
             }
-            if (!values.password || values.password.length < 5) {
+            if (!values.password || values.password.length < 6) {
                 errors.password = 'Password cannot be less than 5 characters.'
             }
             if (!values.rollNumber) {
@@ -70,7 +70,7 @@ function AdminAddStudent() {
             if (!values.batch) {
                 errors.batch = 'Batch cannot be empty.'
             }
-
+            console.log(errors)
             return errors;
         },
         onSubmit(values, formikHelpers) {
@@ -78,7 +78,10 @@ function AdminAddStudent() {
                 dispatch(registerStudent(values))
                     .unwrap(), {
                 loading: 'Loading...',
-                success: 'Student registered successfully.',
+                success: () => {
+                    formikHelpers.resetForm();
+                    return 'Student registered successfully.'
+                },
                 error: 'Could not register a student.'
             }
             )
