@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useMemo } from 'react'
 import AddStudent from '../components/Admin/AddStudent'
 import { Button, Divider, Stack } from '@mui/material'
 import Wrapper from '../components/Wrapper'
@@ -8,25 +8,37 @@ import { FormikErrors, useFormik } from 'formik'
 import { useNavigate } from 'react-router-dom'
 import AddClass from '../components/Admin/AddClass'
 import AdminSidebar from './AdminSidebar'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../redux/store'
+import withAuth from '../utils/withAuth'
+import { getAllTeachers } from '../redux/features/teachersSlice'
+import { getAllStudents } from '../redux/features/studentSlice'
+import { registerClass } from '../redux/features/classSlice'
+import toast from 'react-hot-toast'
 
 
 interface ClassForm {
     courseName: string,
     courseId: string,
-    teacherId: string,
-    studentIds: string[]
+    teacherId: any[],
+    studentIds: any[]
 }
 
 function AdminAddClass() {
     const navigation = useNavigate();
+    const dispatch = useDispatch<AppDispatch>();
+    const { allTeachers } = useSelector((state: RootState) => state.teacher);
+    const { students } = useSelector((state: RootState) => state.student);
+    const { error } = useSelector((state: RootState) => state.class);
 
     const formik = useFormik<ClassForm>({
         initialValues: {
             courseId: '',
             courseName: '',
-            teacherId: '',
+            teacherId: allTeachers ?? [],
             studentIds: []
         },
+        enableReinitialize: true,
         validate(values) {
             const errors: FormikErrors<ClassForm> = {};
             if (!values.courseName) {
@@ -42,9 +54,25 @@ function AdminAddClass() {
             return errors;
         },
         onSubmit(values, formikHelpers) {
-            console.log(values)
+            toast.promise(
+                dispatch(registerClass({ values, formikHelpers }))
+                    .unwrap(), {
+                loading: 'Loading...',
+                success: 'Class added successfully.',
+                error: error || 'Could not add a class.'
+            }
+            )
         },
     })
+
+    useEffect(() => {
+        if (allTeachers.length === 0) {
+            dispatch(getAllTeachers());
+        }
+        if (students.length === 0) {
+            dispatch(getAllStudents())
+        }
+    }, [])
 
 
     return (
@@ -58,8 +86,8 @@ function AdminAddClass() {
                 <PageHeader
                     actions={
                         <React.Fragment>
-                            <Button variant='outlined' onClick={() => navigation('/admin/dashboard/students')} >
-                                All Students
+                            <Button variant='outlined' onClick={() => navigation('/admin/dashboard/classes')} >
+                                Add a Class
                             </Button>
                         </React.Fragment>
                     }
@@ -71,4 +99,4 @@ function AdminAddClass() {
     )
 }
 
-export default AdminAddClass
+export default withAuth(AdminAddClass)

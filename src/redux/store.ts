@@ -4,6 +4,7 @@ import userSlice from "./features/userSlice";
 import authSlice from './features/authSlice';
 import studentSlice from './features/studentSlice';
 import teacherSlice from "./features/teachersSlice";
+import classSlice from "./features/classSlice";
 
 
 export const store = configureStore({
@@ -12,7 +13,8 @@ export const store = configureStore({
         user: userSlice,
         auth: authSlice,
         student: studentSlice,
-        teacher: teacherSlice
+        teacher: teacherSlice,
+        class: classSlice
     }
 })
 
