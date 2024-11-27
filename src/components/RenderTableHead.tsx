@@ -1,23 +1,17 @@
-import { TableCell, TableHead, TableRow, Typography } from '@mui/material'
-import React from 'react'
+import { TableHead, TableRow, TableCell, Typography } from '@mui/material';
 
 function RenderTableHead({ labels }: { labels: string[] }) {
     return (
         <TableHead>
             <TableRow>
-                {labels.map((label) => {
-                    return (
-                        <TableCell>
-                            <Typography fontWeight={'bold'}>
-                                {label}
-                            </Typography>
-                        </TableCell>
-                    )
-                })}
-
+                {labels.map((label, index) => (
+                    <TableCell key={index}>
+                        <Typography fontWeight="bold">{label}</Typography>
+                    </TableCell>
+                ))}
             </TableRow>
         </TableHead>
-    )
+    );
 }
 
-export default RenderTableHead
+export default RenderTableHead;
