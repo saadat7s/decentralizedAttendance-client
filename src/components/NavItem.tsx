@@ -19,9 +19,7 @@ function NavItem({ link, label, icon }: { link: string, label: string, icon: Rea
                 borderColor: 'transparent',
                 borderRadius: 3,
                 ":hover": {
-                    border: '1px solid',
-                    borderColor: 'primary.contrastText',
-                    bgcolor: 'primary.main'
+                    bgcolor: activePath ? 'primary.main' : 'secondary.200'
                 },
                 transition: 'all 0.2s ease'
             }}

@@ -4,20 +4,33 @@ import PageHeader from '../components/PageHeader'
 import Wrapper from '../components/Wrapper'
 import RenderTable from '../components/RenderTable'
 import { Add } from '@mui/icons-material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SimpleModal from '../components/SimpleModal'
 import { useNavigate } from 'react-router-dom'
 import AdminSidebar from './AdminSidebar'
+import withAuth from '../utils/withAuth'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../redux/store'
+import { getAllTeachers } from '../redux/features/teachersSlice'
+import RenderTeacherTableBody from '../components/RenderTeacherTableBody'
 
 function AdminDashboardTeacher() {
     const navigate = useNavigate()
+    const { allTeachers } = useSelector((state: RootState) => state.teacher)
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        if (allTeachers.length === 0) {
+            dispatch(getAllTeachers());
+        }
+    }, [])
 
     return (
         <Wrapper>
 
             <AdminSidebar />
 
-            <Stack flexGrow={1} py={2} px={4}>
+            <Stack flexGrow={1} gap={2} py={2} px={4}>
 
 
                 <PageHeader
@@ -28,10 +41,15 @@ function AdminDashboardTeacher() {
                     }
                 />
 
+                <Divider />
+
                 <RenderTable
-                    tableLabels={['#', 'Name', 'Program', 'Class']}
-                    tableData={[]}
-                />
+                    tableLabels={['#', 'Name', 'Designation', 'Faculty', 'Office Location', 'Courses']}
+                >
+                    <RenderTeacherTableBody
+                        tableData={allTeachers}
+                    />
+                </RenderTable>
 
             </Stack>
 
@@ -40,4 +58,4 @@ function AdminDashboardTeacher() {
     )
 }
 
-export default AdminDashboardTeacher
+export default withAuth(AdminDashboardTeacher)

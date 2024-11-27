@@ -7,9 +7,14 @@ import { Button, Divider, Stack } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import AdminSidebar from './AdminSidebar'
+import { useDispatch } from 'react-redux'
+import { AppDispatch } from '../redux/store'
+import { registerTeacher } from '../redux/features/teachersSlice'
+import withAuth from '../utils/withAuth'
+import toast from 'react-hot-toast'
 
 interface TeacherForm {
-    fullName: string,
+    name: string,
     email: string,
     password: string,
     faculty: string,
@@ -19,10 +24,11 @@ interface TeacherForm {
 
 function AdminAddTeacher() {
     const navigation = useNavigate()
+    const dispatch = useDispatch<AppDispatch>();
 
     const formik = useFormik<TeacherForm>({
         initialValues: {
-            fullName: '',
+            name: '',
             email: '',
             password: '',
             faculty: '',
@@ -31,8 +37,8 @@ function AdminAddTeacher() {
         },
         validate(values) {
             const errors: any = {};
-            if (!values.fullName) {
-                errors.fullName = 'Full Name cannot be empty.'
+            if (!values.name) {
+                errors.name = 'Full Name cannot be empty.'
             }
             if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
                 errors.email = 'A valid email is required.'
@@ -55,6 +61,8 @@ function AdminAddTeacher() {
         },
         onSubmit(values, formikHelpers) {
             console.log(values)
+            dispatch(registerTeacher({ values, formikHelpers }))
+
         },
     })
 
@@ -81,4 +89,4 @@ function AdminAddTeacher() {
     )
 }
 
-export default AdminAddTeacher
+export default withAuth(AdminAddTeacher)

@@ -16,63 +16,121 @@ function AdminDashboard() {
 
             <AdminSidebar />
 
-            <Stack p={2} gap={2}>
-                <Stack alignItems={'end'}>
-                    {userProfile?.name &&
-                        <Button sx={{ width: 'fit-content' }} variant='contained' color='error'>
-                            Logout
-                        </Button>
+            <Stack p={2} gap={2} flexGrow={1}>
+
+                <PageHeader
+                    actions={
+                        null
                     }
-                </Stack>
+                />
                 <Divider />
 
-                {/* <PageHeader
-                    actions={null}
-                    title='Dashboard'
-                /> */}
-
                 <Stack
-                    gap={3}
-                    px={2}
-                    py={2}
-                    flexGrow={1}
+                    direction={'row'}
+                    gap={2}
                 >
-                    <Stack>
-                        <Typography variant='h4' color='secondary.200' fontWeight={'bold'}>
-                            Welcome to your dashboard, {userProfile?.name}
-                        </Typography>
+
+
+                    <Stack
+                        gap={3}
+                        px={2}
+                        py={2}
+                        flexGrow={1}
+                    >
+                        <Stack>
+                            <Typography variant='h4' color='secondary.200' fontWeight={'bold'}>
+                                Welcome to your dashboard, {userProfile?.name}
+                            </Typography>
+                        </Stack>
+
+                        <Stack>
+                            <EmptyDashboardCard
+                                to='/admin/dashboard/students'
+                                title='Add Students'
+                                subtitle='You are able to Register Students'
+                                icon={
+                                    <School color='primary' sx={{ bgcolor: 'secondary.100', p: 0.5, borderRadius: 2 }} />
+                                }
+                            />
+
+                            <EmptyDashboardCard
+                                to='/admin/dashboard/teachers'
+                                title='Add Teachers'
+                                subtitle='You are able to Register Teachers'
+                                icon={
+                                    <Face2 color='primary' sx={{ bgcolor: 'secondary.100', p: 0.5, borderRadius: 2 }} />
+                                }
+                            />
+
+                            <EmptyDashboardCard
+                                to='/admin/dashboard/classes'
+                                title='Add Class'
+                                subtitle='You can create a class, assign an instructor to it and add the students to it to get going.'
+                                icon={
+                                    <AccountBalance color='primary' sx={{ bgcolor: 'secondary.100', p: 0.5, borderRadius: 2 }} />
+                                }
+
+                                
+                            />
+
+                            <EmptyDashboardCard
+                                to='/admin/dashboard/sessions'
+                                title='Add Session'
+                                subtitle='You can create a session, which lets you schedule a class.'
+                                icon={
+                                    <AccountBalance color='primary' sx={{ bgcolor: 'secondary.100', p: 0.5, borderRadius: 2 }} />
+                                }
+
+                                
+                            />
+
+                        </Stack>
                     </Stack>
 
-                    <Stack>
-                        <EmptyDashboardCard
-                            to='/admin/dashboard/students'
-                            title='Add Students'
-                            subtitle='Create rich course content and coaching products for your students.
-                        When you give them a pricing plan, they’ll appear on your site!'
-                            icon={
-                                <School color='primary' sx={{ bgcolor: 'secondary.100', p: 0.5, borderRadius: 2 }} />
-                            }
-                        />
+                    <Stack
+                        gap={2}
+                        border={'1px solid'}
+                        borderColor={'secondary.100'}
+                        borderRadius={3}
+                        flexGrow={1}
+                        p={4}
+                        divider={<Divider />}
+                    >
+                        <Stack>
+                            <Typography variant='h5' color='secondary.200' fontWeight={'bold'}>
+                                Teachers
+                            </Typography>
+                            <Typography>
+                                15
+                            </Typography>
+                        </Stack>
 
-                        <EmptyDashboardCard
-                            to='/admin/dashboard/teachers'
-                            title='Add Teachers'
-                            subtitle='Create rich course content and coaching products for your students.
-                        When you give them a pricing plan, they’ll appear on your site!'
-                            icon={
-                                <Face2 color='primary' sx={{ bgcolor: 'secondary.100', p: 0.5, borderRadius: 2 }} />
-                            }
-                        />
+                        <Stack>
+                            <Typography variant='h5' color='secondary.200' fontWeight={'bold'}>
+                                Students
+                            </Typography>
+                            <Typography>
+                                15
+                            </Typography>
+                        </Stack>
 
-                        <EmptyDashboardCard
-                            to='/admin/dashboard/classes'
-                            title='Add Class'
-                            subtitle='Create rich course content and coaching products for your students.
-                        When you give them a pricing plan, they’ll appear on your site!'
-                            icon={
-                                <AccountBalance color='primary' sx={{ bgcolor: 'secondary.100', p: 0.5, borderRadius: 2 }} />
-                            }
-                        />
+                        <Stack>
+                            <Typography variant='h5' color='secondary.200' fontWeight={'bold'}>
+                                Classes
+                            </Typography>
+                            <Typography>
+                                15
+                            </Typography>
+                        </Stack>
+
+                        <Stack>
+                            <Typography variant='h5' color='secondary.200' fontWeight={'bold'}>
+                                Sessions
+                            </Typography>
+                            <Typography>
+                                15
+                            </Typography>
+                        </Stack>
 
                     </Stack>
                 </Stack>
@@ -83,3 +141,4 @@ function AdminDashboard() {
 }
 
 export default withAuth(AdminDashboard)
+export {};

@@ -9,12 +9,14 @@ import AdminDashboardClasses from './pages/AdminDashboardClasses';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import Register from './components/Register';
-import AdminLogin from './components/AdminLogin';
+import AdminLogin from './components/Admin/AdminLogin';
 import AdminAddTeacher from './pages/AdminAddTeacher';
 import AdminAddStudent from './pages/AdminAddStudent';
 import AdminAddClass from './pages/AdminAddClass';
 import TeacherHome from './pages/TeacherHome';
 import StudentHome from './components/Student/StudentHome';
+import AdminDashboardSessions from './pages/AdminDashboardSessions';
+import AdminCreateSession from './pages/AdminCreateSession';
 
 
 function App() {
@@ -33,6 +35,9 @@ function App() {
           <Route path='/admin/dashboard/students/add-student' element={<AdminAddStudent />} />
           <Route path='/admin/dashboard/classes' element={<AdminDashboardClasses />} />
           <Route path='/admin/dashboard/classes/add-class' element={<AdminAddClass />} />
+          <Route path="/admin/dashboard/sessions" element={<AdminDashboardSessions />} />
+          <Route path="/admin/dashboard/sessions/create-session" element={<AdminCreateSession />} />
+
 
           <Route path='/admin/login' element={<AdminLogin />} />
 

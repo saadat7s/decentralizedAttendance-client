@@ -26,6 +26,7 @@ axiosInstance.interceptors.request.use(async (req) => {
     if (!token || isTokenExpired(token)) {
         console.error('No valid token found.');
         //TODO: Redirect to login page
+
         //TODO: Block the request
         return Promise.reject('No valid token found.');
     }
