@@ -13,6 +13,7 @@ import AdminLogin from './components/Admin/AdminLogin';
 import AdminAddTeacher from './pages/AdminAddTeacher';
 import AdminAddStudent from './pages/AdminAddStudent';
 import AdminAddClass from './pages/AdminAddClass';
+import TeacherLogin from './components/Teacher/TeacherLogin';
 import TeacherHome from './pages/TeacherHome';
 import StudentHome from './components/Student/StudentHome';
 import AdminDashboardSessions from './pages/AdminDashboardSessions';
@@ -41,7 +42,7 @@ function App() {
 
           <Route path='/admin/login' element={<AdminLogin />} />
 
-
+          <Route path='/teacher/login' element={<TeacherLogin />} />
           <Route path='/teacher/home' element={<TeacherHome />} />
           <Route path='/teacher/details' element={<TeacherHome />} />
           <Route path='/teacher/students' element={<TeacherHome />} />

@@ -1,15 +1,23 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axiosInstance from "../../utils/axios/axiosInstance"
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axiosInstance from "../../utils/axios/axiosInstance";
 import toast from "react-hot-toast";
 
-const initialState = {
+  
+  interface ClassState {
+    classes:[]; 
+    loading: boolean;
+    message: string;
+    error: string;
+  }
+  
+  const initialState: ClassState = {
     classes: [],
-
     loading: false,
     message: '',
     error: ''
-}
+  };
 
+// Register a class
 export const registerClass = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
     'class/registerClass',
     async (data: any, { rejectWithValue }) => {
@@ -21,8 +29,9 @@ export const registerClass = createAsyncThunk<any, any, { rejectValue: { message
             return rejectWithValue({ message: error?.message });
         }
     }
-)
+);
 
+// Edit a class
 export const editClass = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
     'class/editClass',
     async (data: any, { rejectWithValue }) => {
@@ -31,11 +40,12 @@ export const editClass = createAsyncThunk<any, any, { rejectValue: { message: st
             data.formikHelpers.resetForm();
             return response;
         } catch (error: any) {
-            return rejectWithValue({ message: error?.message })
+            return rejectWithValue({ message: error?.message });
         }
     }
-)
+);
 
+// Get all classes
 export const getAllClasses = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
     'class/getAllClasses',
     async (_, { rejectWithValue }) => {
@@ -43,59 +53,84 @@ export const getAllClasses = createAsyncThunk<any, void, { rejectValue: { messag
             const response = await axiosInstance.get('/admin/get-all-classes');
             return response;
         } catch (error: any) {
-            return rejectWithValue({ message: error?.message })
+            return rejectWithValue({ message: error?.message });
         }
     }
-)
+);
+
+// Async thunk to fetch assigned classes
+export const getAssignedClasses = createAsyncThunk('class/getAssignedClasses', async () => {
+    try {
+      const response = await axiosInstance.get('/teacher/get-assigned-classes');
+      return response.data.classes; 
+    } catch (error: any) {
+      throw new Error(error.message);
+    }
+  });
+  
+
 
 
 const classSlice = createSlice({
     name: 'class',
     initialState: initialState,
-    reducers: {
-
-    },
+    reducers: {},
     extraReducers(builder) {
-        // register class builder
+
+        // Get assigned classes
+        builder
+        .addCase(getAssignedClasses.pending, (state) => {
+          state.loading = true;
+        })
+        .addCase(getAssignedClasses.fulfilled, (state, action) => {
+          state.loading = false;
+          state.classes = action.payload; 
+        })
+        .addCase(getAssignedClasses.rejected, (state, action) => {
+          state.loading = false;
+          state.error = action.error.message || 'An error occurred';
+        });
+
+        // Register class
         builder.addCase(registerClass.pending, state => {
             state.loading = true;
-        })
+        });
         builder.addCase(registerClass.fulfilled, (state, action) => {
             state.loading = false;
             state.message = action.payload?.message;
-        })
+        });
         builder.addCase(registerClass.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload?.message!
-        })
+            state.error = action.payload?.message!;
+        });
 
-        // edit class builder
+        // Edit class
         builder.addCase(editClass.pending, state => {
             state.loading = true;
-        })
+        });
         builder.addCase(editClass.fulfilled, (state, action) => {
             state.loading = false;
             state.message = action.payload?.message;
-        })
+        });
         builder.addCase(editClass.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload?.message!
-        })
+            state.error = action.payload?.message!;
+        });
 
-        // all class builder
+        // Get all classes
         builder.addCase(getAllClasses.pending, state => {
             state.loading = true;
-        })
+        });
         builder.addCase(getAllClasses.fulfilled, (state, action) => {
             state.loading = false;
             state.message = action.payload?.message;
             state.classes = action.payload?.classes;
-        })
+        });
         builder.addCase(getAllClasses.rejected, (state, action) => {
             state.loading = false;
-            state.error = action.payload?.message!
-        })
+            state.error = action.payload?.message!;
+        });
     },
-})
+});
 
 export default classSlice.reducer;
