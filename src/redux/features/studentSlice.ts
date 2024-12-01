@@ -33,6 +33,21 @@ export const getAllStudents = createAsyncThunk<any, void, { rejectValue: { messa
     }
 )
 
+export const getStudentsByClass = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+    'student/getStudentsByClass',
+    async (data: string, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.post('/teacher/get-student-by-class', data);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.response?.data?.message })
+
+        }
+        // TODO: implement builder
+
+    }
+)
+
 const studentSlice = createSlice({
     name: 'student',
     initialState: initialState,

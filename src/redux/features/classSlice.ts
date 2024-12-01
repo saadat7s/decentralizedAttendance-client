@@ -1,21 +1,24 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axios/axiosInstance";
-import toast from "react-hot-toast";
 
-  
-  interface ClassState {
-    classes:[]; 
+interface classType {
+    id: string,
+    name: string
+}
+
+interface ClassState {
+    classes: classType[];
     loading: boolean;
     message: string;
     error: string;
-  }
-  
-  const initialState: ClassState = {
+}
+
+const initialState: ClassState = {
     classes: [],
     loading: false,
     message: '',
     error: ''
-  };
+};
 
 // Register a class
 export const registerClass = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
@@ -58,16 +61,21 @@ export const getAllClasses = createAsyncThunk<any, void, { rejectValue: { messag
     }
 );
 
-// Async thunk to fetch assigned classes
-export const getAssignedClasses = createAsyncThunk('class/getAssignedClasses', async () => {
-    try {
-      const response = await axiosInstance.get('/teacher/get-assigned-classes');
-      return response.data.classes; 
-    } catch (error: any) {
-      throw new Error(error.message);
+
+export const getAssignedClasses = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    '/class/getAssignedClasses',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/teacher/get-assigned-classes');
+            return response;
+        } catch (error: any) {
+            throw new Error(error.message);
+        }
     }
-  });
-  
+)
+
+
+
 
 
 
@@ -79,17 +87,18 @@ const classSlice = createSlice({
 
         // Get assigned classes
         builder
-        .addCase(getAssignedClasses.pending, (state) => {
-          state.loading = true;
-        })
-        .addCase(getAssignedClasses.fulfilled, (state, action) => {
-          state.loading = false;
-          state.classes = action.payload; 
-        })
-        .addCase(getAssignedClasses.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.error.message || 'An error occurred';
-        });
+            .addCase(getAssignedClasses.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getAssignedClasses.fulfilled, (state, action) => {
+                state.loading = false;
+                state.classes = action.payload?.classes;
+                state.message = action.payload?.message;
+            })
+            .addCase(getAssignedClasses.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || 'An error occurred';
+            });
 
         // Register class
         builder.addCase(registerClass.pending, state => {
@@ -130,6 +139,7 @@ const classSlice = createSlice({
             state.loading = false;
             state.error = action.payload?.message!;
         });
+
     },
 });
 

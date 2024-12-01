@@ -1,19 +1,31 @@
 // src/pages/Home.tsx
-import React from 'react';
-import { Button, MenuItem, Stack, TextField, Typography} from '@mui/material';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/features/authSlice';
 import { useNavigate } from 'react-router-dom';
-import { AppDispatch } from '../../redux/store';  
+import { AppDispatch, RootState } from '../../redux/store';
 import TeacherNavbar from './TeacherNavbar';
+import { getAssignedClasses } from '../../redux/features/classSlice';
+import { getStudentsByClass } from '../../redux/features/studentSlice';
 
 function Home() {
-  const dispatch = useDispatch<AppDispatch>(); 
-  const navigate = useNavigate(); 
+  const [selectClass, setSelectedClass] = useState('');
+  const { classes } = useSelector((state: RootState) => state.class);
+  const dispatch = useDispatch<AppDispatch>();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
-    dispatch(logoutUser({ navigate })); 
+    dispatch(logoutUser({ navigate }));
   };
+
+  useEffect(() => {
+    if (classes.length === 0) {
+      dispatch(getAssignedClasses())
+    }
+    dispatch(getStudentsByClass(selectClass));
+
+  }, [selectClass])
 
   return (
     <Stack
@@ -52,27 +64,33 @@ function Home() {
           </Button>
         </Stack>
         <Stack gap={3} width={700} height={'70%'} alignItems={'start'}>
-                    <TextField
-                        size='small'
-                        label='Section'
-                        placeholder='CS-II'
-                        select
-                        sx={{
-                            width: 150,
-                        }}
-                    >
-                        <MenuItem>
-                            CS-I
-                        </MenuItem>
-                        <MenuItem>
-                            SE-II
-                        </MenuItem>
-                    </TextField>
-                </Stack>
+          <TextField
+            size='small'
+            label='Class'
+            placeholder='CS-II'
+            select
+            sx={{
+              minWidth: 300,
+            }}
+            onChange={(e) => {
+              setSelectedClass(e.target.value)
+              console.log(e.target.value);
+            }}
+          >
+            {classes.length > 0 && classes.map((c) => {
+              return (
+                <MenuItem value={c.id}>
+                  {c.name}
+                </MenuItem>
+              )
+            })}
+          </TextField>
 
-        <Button 
-          variant="outlined" 
-          color="error" 
+        </Stack>
+
+        <Button
+          variant="outlined"
+          color="error"
           onClick={handleLogout}
           sx={{ mt: 2 }}
         >
