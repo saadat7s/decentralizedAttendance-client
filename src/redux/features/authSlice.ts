@@ -34,8 +34,8 @@ export const logoutUser = createAsyncThunk<any, any, { rejectValue: { message: s
     'auth/logoutUser',
     async (data: any, { rejectWithValue, dispatch }) => {
         try {
-            const response = await axiosInstance.get('/auth/login/logout');
-            data.navigate('/admin/login')
+            const response = await axiosInstance.get('/auth/logout');
+            data.navigate('/admin/logout')
             dispatch(setAuthenticated(false))
             return response;
         } catch (error: any) {

@@ -1,4 +1,5 @@
-// src/pages/Home.tsx
+// src/components/Teacher/Home.tsx
+
 import React, { useEffect, useState } from 'react';
 import { Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,10 +9,28 @@ import { AppDispatch, RootState } from '../../redux/store';
 import TeacherNavbar from './TeacherNavbar';
 import { getAssignedClasses } from '../../redux/features/classSlice';
 import { getStudentsByClass } from '../../redux/features/studentSlice';
+import { getSessionsByClass, startSessionById } from '../../redux/features/sessionSlice';
+
+// Define a local interface for students specific to Home
+interface HomeStudentType {
+  id: string;
+  studentName: string;
+  rollNumber: string;
+}
+
+// Define a local interface for sessions specific to Home
+interface HomeSessionType {
+  id: string;
+  sessionName: string;
+  sessionDate: string;
+}
 
 function Home() {
   const [selectClass, setSelectedClass] = useState('');
+  const [selectSession, setSelectedSession] = useState('');
+  const { allSessions} = useSelector((state: RootState) => state.session);
   const { classes } = useSelector((state: RootState) => state.class);
+  const { students, loading, error } = useSelector((state: RootState) => state.student);
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
@@ -21,11 +40,28 @@ function Home() {
 
   useEffect(() => {
     if (classes.length === 0) {
-      dispatch(getAssignedClasses())
+      dispatch(getAssignedClasses());
     }
-    dispatch(getStudentsByClass(selectClass));
+  }, [dispatch, classes]);
+  
 
-  }, [selectClass])
+  useEffect(() => {
+    if (selectClass) {
+      dispatch(getStudentsByClass(selectClass)); 
+    }
+  }, [selectClass, dispatch]);
+
+  useEffect(() => {
+    if (selectClass) {
+      dispatch(getSessionsByClass(selectClass));  
+    }
+  }, [selectClass, dispatch]);
+
+  useEffect(() => {
+    if (selectSession) {
+      dispatch(startSessionById(selectSession));  
+    }
+  }, [selectSession, dispatch]);
 
   return (
     <Stack
@@ -63,7 +99,8 @@ function Home() {
             Refresh
           </Button>
         </Stack>
-        <Stack gap={3} width={700} height={'70%'} alignItems={'start'}>
+
+        <Stack gap={3} width={700} height={'10%'} alignItems={'start'}>
           <TextField
             size='small'
             label='Class'
@@ -73,20 +110,60 @@ function Home() {
               minWidth: 300,
             }}
             onChange={(e) => {
-              setSelectedClass(e.target.value)
+              setSelectedClass(e.target.value);
               console.log(e.target.value);
             }}
           >
-            {classes.length > 0 && classes.map((c) => {
-              return (
-                <MenuItem value={c.id}>
-                  {c.name}
-                </MenuItem>
-              )
-            })}
+            {classes.length > 0 && classes.map((c) => (
+              <MenuItem key={c.id} value={c.id}>
+                {c.name}
+              </MenuItem>
+            ))}
           </TextField>
-
         </Stack>
+
+        <Stack gap={2} width={700} height={'30%'} alignItems={'start'}>
+          <TextField
+            size='small'
+            label='Sessions'
+            placeholder='Lecture'
+            select
+            sx={{
+              minWidth: 300,
+            }}
+            onChange={(e) => {
+              setSelectedSession(e.target.value);
+            }}
+          >
+            {allSessions.length > 0 && allSessions.map((s: HomeSessionType) => (
+              <MenuItem key={s.id} value={s.id}>
+                {s.sessionName}
+              </MenuItem>
+            ))}
+          </TextField>
+        </Stack>
+
+        {loading && <Typography>Loading students...</Typography>} 
+        {error && <Typography color="error">{error}</Typography>}  
+
+        <Stack direction="row" spacing={5}>
+          {students.length > 0 && students.map((student: HomeStudentType) => (
+            <div key={student.id}>
+              <Typography>{student.studentName}</Typography>
+              <Typography>{student.rollNumber}</Typography>
+
+            </div>
+          ))}
+        </Stack>
+
+        <Button
+          variant="contained"
+          // color=""
+          // onClick={}
+          sx={{ mt: 2 }}
+        >
+          Confirm
+        </Button>
 
         <Button
           variant="outlined"

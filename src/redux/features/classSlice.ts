@@ -66,7 +66,7 @@ export const getAssignedClasses = createAsyncThunk<any, void, { rejectValue: { m
     '/class/getAssignedClasses',
     async (_, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.get('/teacher/get-assigned-classes');
+            const response = await axiosInstance.get('/teacher/get-assigned-classes/');
             return response;
         } catch (error: any) {
             throw new Error(error.message);

@@ -2,8 +2,15 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axiosInstance from '../../utils/axios/axiosInstance';
 import toast from 'react-hot-toast';
 
-// created an initial state to keep track
-const initialState = {
+
+interface SessionState {
+    allSessions: [];
+    loading: boolean;
+    message: string;
+    error: string;
+}
+
+const initialState : SessionState = {
     allSessions: [],
 
     loading: false,
@@ -35,6 +42,32 @@ export const getAllSessions = createAsyncThunk<any, void, { rejectValue: { messa
         }
     }
 )
+
+//  getSessionsByClass async thunk
+export const getSessionsByClass = createAsyncThunk<any, string, { rejectValue: { message: string } }>(
+    'student/getSessionsByClass',
+    async (classId: string, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(`/teacher/get-sessions-by-class/${classId}`);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.response?.data?.message || 'Error fetching sessions' });
+        }
+    }
+);
+
+//  getSessionsByClass async thunk
+export const startSessionById = createAsyncThunk<any, string, { rejectValue: { message: string } }>(
+    'student/startSessionById',
+    async (sessionId: string, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.post(`/teacher/start-session-upon-selection/${sessionId}`);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.response?.data?.message || 'Error starting session' });
+        }
+    }
+);
 
 
 
@@ -70,8 +103,40 @@ const sessionSlice = createSlice({
             state.loading = false;
             state.error = action.payload?.message!
         })
+
+        
+        // get sessions by class builder
+        builder.addCase(getSessionsByClass.pending, state =>{
+            state.loading = true;
+        })
+        builder.addCase(getSessionsByClass.fulfilled, (state, action) =>{
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.allSessions = action.payload?.sessions || [];
+        })
+        builder.addCase(getSessionsByClass.rejected, (state, action) =>{
+            state.loading = false;
+            state.error = action.payload?.message!;
+            toast.error(state.error);
+        })
+
+        // start a session
+        builder.addCase(startSessionById.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(startSessionById.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            toast.success(state.message);
+        })
+        builder.addCase(startSessionById.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message!
+            toast.error(state.error);
+        })
     },
-});
+    },
+);
 
 export default sessionSlice.reducer;
 

@@ -2,7 +2,16 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axiosInstance from "../../utils/axios/axiosInstance"
 import toast from "react-hot-toast";
 
-const initialState = {
+
+
+interface StudentState {
+    students: [];
+    loading: boolean;
+    message: string;
+    error: string;
+}
+
+const initialState :StudentState = {
     students: [],
 
     loading: false,
@@ -33,20 +42,18 @@ export const getAllStudents = createAsyncThunk<any, void, { rejectValue: { messa
     }
 )
 
-export const getStudentsByClass = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+//  getStudentsByClass async thunk
+export const getStudentsByClass = createAsyncThunk<any, string, { rejectValue: { message: string } }>(
     'student/getStudentsByClass',
-    async (data: string, { rejectWithValue }) => {
+    async (classId: string, { rejectWithValue }) => {
         try {
-            const response = await axiosInstance.post('/teacher/get-student-by-class', data);
+            const response = await axiosInstance.get(`/teacher/get-students-by-class/${classId}`);
             return response;
         } catch (error: any) {
-            return rejectWithValue({ message: error?.response?.data?.message })
-
+            return rejectWithValue({ message: error?.response?.data?.message || 'Error fetching students' });
         }
-        // TODO: implement builder
-
     }
-)
+);
 
 const studentSlice = createSlice({
     name: 'student',
@@ -78,6 +85,21 @@ const studentSlice = createSlice({
             state.loading = false;
             state.message = action.payload?.message;
             state.students = action.payload?.students;
+        })
+
+        // get students by class builder
+        builder.addCase(getStudentsByClass.pending, state =>{
+            state.loading = true;
+        })
+        builder.addCase(getStudentsByClass.fulfilled, (state, action) =>{
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.students = action.payload?.students || [];
+        })
+        builder.addCase(getStudentsByClass.rejected, (state, action) =>{
+            state.loading = false;
+            state.error = action.payload?.message!;
+            toast.error(state.error);
         })
     },
 }
