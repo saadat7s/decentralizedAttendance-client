@@ -1,7 +1,7 @@
 // src/components/Teacher/Home.tsx
 
 import React, { useEffect, useState } from 'react';
-import { Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel, FormGroup, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutUser } from '../../redux/features/authSlice';
 import { useNavigate } from 'react-router-dom';
@@ -28,13 +28,17 @@ interface HomeSessionType {
 function Home() {
   const [selectClass, setSelectedClass] = useState('');
   const [selectSession, setSelectedSession] = useState('');
-  const { allSessions} = useSelector((state: RootState) => state.session);
+  const { allSessions } = useSelector((state: RootState) => state.session);
   const { classes } = useSelector((state: RootState) => state.class);
   const { students, loading, error } = useSelector((state: RootState) => state.student);
+  const [studentAttendance, setStudentAttendance] = useState<string[]>([]);
+  const { userProfile } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.removeItem('x_auth_token')
+    navigate('/');
     dispatch(logoutUser({ navigate }));
   };
 
@@ -43,23 +47,29 @@ function Home() {
       dispatch(getAssignedClasses());
     }
   }, [dispatch, classes]);
-  
 
+  function StudentAttendanceHandler(studentId: string) {
+    setStudentAttendance((prev) =>
+      prev.includes(studentId)
+        ? prev.filter((id) => id !== studentId)
+        : [...prev, studentId]
+    )
+  }
   useEffect(() => {
     if (selectClass) {
-      dispatch(getStudentsByClass(selectClass)); 
+      dispatch(getStudentsByClass(selectClass));
     }
   }, [selectClass, dispatch]);
 
   useEffect(() => {
     if (selectClass) {
-      dispatch(getSessionsByClass(selectClass));  
+      dispatch(getSessionsByClass(selectClass));
     }
   }, [selectClass, dispatch]);
 
   useEffect(() => {
     if (selectSession) {
-      dispatch(startSessionById(selectSession));  
+      dispatch(startSessionById(selectSession));
     }
   }, [selectSession, dispatch]);
 
@@ -92,9 +102,15 @@ function Home() {
         }}
       >
         <Stack
-          alignItems={'end'}
+          direction={'row'}
+          justifyContent={'space-between'}
+          alignItems={'center'}
+          gap={3}
           width={'100%'}
         >
+          <Typography variant='h5'>
+            {userProfile?.name}
+          </Typography>
           <Button variant='text' sx={{ textTransform: 'capitalize' }}>
             Refresh
           </Button>
@@ -143,24 +159,41 @@ function Home() {
           </TextField>
         </Stack>
 
-        {loading && <Typography>Loading students...</Typography>} 
-        {error && <Typography color="error">{error}</Typography>}  
+        {loading && <Typography>Loading students...</Typography>}
+        {error && <Typography color="error">{error}</Typography>}
 
         <Stack direction="row" spacing={5}>
           {students.length > 0 && students.map((student: HomeStudentType) => (
-            <div key={student.id}>
-              <Typography>{student.studentName}</Typography>
-              <Typography>{student.rollNumber}</Typography>
-
-            </div>
+            <Box
+              onClick={() => StudentAttendanceHandler(student.id)}
+              sx={{
+                cursor: 'pointer'
+              }}
+            >
+              <Stack
+                direction={'row'}
+                gap={3}
+                alignItems={'center'}
+                p={1}
+                borderRadius={3}
+                bgcolor={studentAttendance.includes(student.id) ? 'lightgreen' : 'secondary.300'}
+              >
+                <Typography>{student.rollNumber}</Typography>
+                <Typography>{student.studentName}</Typography>
+                <Checkbox
+                  value={student.id}
+                  sx={{ p: 0 }}
+                  checked={studentAttendance?.includes(student.id)}
+                />
+              </Stack>
+            </Box>
           ))}
         </Stack>
 
         <Button
           variant="contained"
-          // color=""
-          // onClick={}
           sx={{ mt: 2 }}
+          disabled={!selectSession}
         >
           Confirm
         </Button>
