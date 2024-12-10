@@ -74,9 +74,17 @@ export const getAssignedClasses = createAsyncThunk<any, void, { rejectValue: { m
     }
 )
 
-
-
-
+export const getStudentsClassesDetails = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+    '/class/getStudentsClassesDetails',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/student/classes');
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message })
+        }
+    }
+)
 
 
 const classSlice = createSlice({
@@ -139,6 +147,20 @@ const classSlice = createSlice({
             state.loading = false;
             state.error = action.payload?.message!;
         });
+
+        // Get Student Classes Details for attendance
+        builder.addCase(getStudentsClassesDetails.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getStudentsClassesDetails.fulfilled, (state, action) => {
+            state.classes = action.payload?.studentClasses;
+            state.message = action.payload?.message;
+            state.loading = false;
+        })
+        builder.addCase(getStudentsClassesDetails.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message!;
+        })
 
     },
 });

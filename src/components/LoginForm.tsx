@@ -46,7 +46,7 @@ function LoginForm({ title, subtitle, formik, actions }: { title: string, subtit
                                 onBlur={formik.handleBlur}
                                 value={formik.values.email}
                                 label="Email"
-                                placeholder='admin@email.com'
+                                placeholder='user@email.com'
                                 error={formik.touched.email && Boolean(formik.errors.email)}
                                 helperText={formik.touched.email && formik.errors.email}
                             />

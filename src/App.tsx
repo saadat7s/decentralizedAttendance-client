@@ -15,9 +15,10 @@ import AdminAddStudent from './pages/AdminAddStudent';
 import AdminAddClass from './pages/AdminAddClass';
 import TeacherLogin from './components/Teacher/TeacherLogin';
 import TeacherHome from './pages/TeacherHome';
-import StudentHome from './components/Student/StudentHome';
 import AdminDashboardSessions from './pages/AdminDashboardSessions';
 import AdminCreateSession from './pages/AdminCreateSession';
+import StudentHome from './pages/StudentHome';
+import Login from './components/Student/Login';
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path='/teacher/details' element={<TeacherHome />} />
           <Route path='/teacher/students' element={<TeacherHome />} />
 
+          <Route path='/student/login' element={<Login />} />
           <Route path='/student/home' element={<StudentHome />} />
           <Route path='/student/reports' element={<TeacherHome />} />
 
