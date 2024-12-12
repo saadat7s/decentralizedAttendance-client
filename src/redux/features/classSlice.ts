@@ -1,13 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axios/axiosInstance";
 
-interface classType {
-    id: string,
-    name: string
-}
-
 interface ClassState {
-    classes: classType[];
+    classes: any[];
     loading: boolean;
     message: string;
     error: string;
@@ -90,7 +85,9 @@ export const getStudentsClassesDetails = createAsyncThunk<any, any, { rejectValu
 const classSlice = createSlice({
     name: 'class',
     initialState: initialState,
-    reducers: {},
+    reducers: {
+
+    },
     extraReducers(builder) {
 
         // Get assigned classes

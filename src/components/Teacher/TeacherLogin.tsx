@@ -72,7 +72,7 @@ function TeacherLogin() {
         if (isAuthenticated && userProfile?.role === 'teacher') {
             navigate('/teacher/home');
         }
-    }, [isAuthenticated, userProfile, dispatch, navigate]);
+    }, [isAuthenticated, dispatch, navigate]);
 
     return (
         <LoginForm

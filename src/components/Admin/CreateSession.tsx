@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
 
 function CreateSession({ formik }: { formik: any }) {
     return (
@@ -25,12 +25,16 @@ function CreateSession({ formik }: { formik: any }) {
                     variant="filled"
                     name="classId"
                     label="Class ID"
+                    select
                     placeholder="Enter Class ID"
                     value={formik.values.classId}
                     onChange={formik.handleChange}
                     error={Boolean(formik.touched.classId && formik.errors.classId)}
                     helperText={formik.touched.classId && formik.errors.classId}
-                />
+                >
+                    <MenuItem>
+                    </MenuItem>
+                </TextField>
                 <TextField
                     fullWidth
                     variant="filled"

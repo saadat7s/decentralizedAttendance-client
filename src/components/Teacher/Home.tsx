@@ -9,7 +9,7 @@ import { AppDispatch, RootState } from '../../redux/store';
 import TeacherNavbar from './TeacherNavbar';
 import { getAssignedClasses } from '../../redux/features/classSlice';
 import { getStudentsByClass } from '../../redux/features/studentSlice';
-import { getSessionsByClass, startSessionById } from '../../redux/features/sessionSlice';
+import { getSessionsByClass, startSessionById, toggleStudentAttendance } from '../../redux/features/sessionSlice';
 
 // Define a local interface for students specific to Home
 interface HomeStudentType {
@@ -28,10 +28,9 @@ interface HomeSessionType {
 function Home() {
   const [selectClass, setSelectedClass] = useState('');
   const [selectSession, setSelectedSession] = useState('');
-  const { allSessions } = useSelector((state: RootState) => state.session);
+  const { allSessions, session } = useSelector((state: RootState) => state.session);
   const { classes } = useSelector((state: RootState) => state.class);
   const { students, loading, error } = useSelector((state: RootState) => state.student);
-  const [studentAttendance, setStudentAttendance] = useState<string[]>([]);
   const { userProfile } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch<AppDispatch>();
   const navigate = useNavigate();
@@ -42,19 +41,16 @@ function Home() {
     dispatch(logoutUser({ navigate }));
   };
 
+  function StudentAttendanceHandler(studentId: string) {
+    dispatch(toggleStudentAttendance(studentId))
+
+  }
   useEffect(() => {
     if (classes.length === 0) {
       dispatch(getAssignedClasses());
     }
   }, [dispatch, classes]);
 
-  function StudentAttendanceHandler(studentId: string) {
-    setStudentAttendance((prev) =>
-      prev.includes(studentId)
-        ? prev.filter((id) => id !== studentId)
-        : [...prev, studentId]
-    )
-  }
   useEffect(() => {
     if (selectClass) {
       dispatch(getStudentsByClass(selectClass));
@@ -116,7 +112,7 @@ function Home() {
           </Button>
         </Stack>
 
-        <Stack gap={3} width={700} height={'10%'} alignItems={'start'}>
+        <Stack gap={3} width={700} alignItems={'start'}>
           <TextField
             size='small'
             label='Class'
@@ -136,9 +132,6 @@ function Home() {
               </MenuItem>
             ))}
           </TextField>
-        </Stack>
-
-        <Stack gap={2} width={700} height={'30%'} alignItems={'start'}>
           <TextField
             size='small'
             label='Sessions'
@@ -159,12 +152,14 @@ function Home() {
           </TextField>
         </Stack>
 
+
         {loading && <Typography>Loading students...</Typography>}
         {error && <Typography color="error">{error}</Typography>}
 
         <Stack direction="row" spacing={5}>
           {students.length > 0 && students.map((student: HomeStudentType) => (
             <Box
+              key={student.id}
               onClick={() => StudentAttendanceHandler(student.id)}
               sx={{
                 cursor: 'pointer'
@@ -176,14 +171,15 @@ function Home() {
                 alignItems={'center'}
                 p={1}
                 borderRadius={3}
-                bgcolor={studentAttendance.includes(student.id) ? 'lightgreen' : 'secondary.300'}
+                bgcolor={session?.attendance?.includes(student.id) ? 'lightgreen' : 'secondary.300'}
               >
                 <Typography>{student.rollNumber}</Typography>
                 <Typography>{student.studentName}</Typography>
                 <Checkbox
                   value={student.id}
                   sx={{ p: 0 }}
-                  checked={studentAttendance?.includes(student.id)}
+                  checked={session?.attendance?.includes(student.id) || false}
+
                 />
               </Stack>
             </Box>

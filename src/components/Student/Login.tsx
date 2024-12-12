@@ -67,7 +67,7 @@ function Login() {
     });
     return (
         <LoginForm
-            title="Welcome, Log in with your Teacher Credentials"
+            title="Welcome, Log in with your Student Credentials"
             subtitle="It is our great pleasure to have you on board"
             formik={formik}
             actions={
