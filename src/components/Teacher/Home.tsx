@@ -10,6 +10,7 @@ import TeacherNavbar from './TeacherNavbar';
 import { getAssignedClasses } from '../../redux/features/classSlice';
 import { getStudentsByClass } from '../../redux/features/studentSlice';
 import { getSessionsByClass, startSessionById, toggleStudentAttendance } from '../../redux/features/sessionSlice';
+import { finalizeAttendance } from '../../redux/features/teachersSlice';
 
 // Define a local interface for students specific to Home
 interface HomeStudentType {
@@ -42,8 +43,18 @@ function Home() {
   };
 
   function StudentAttendanceHandler(studentId: string) {
-    dispatch(toggleStudentAttendance(studentId))
+    if (!session.ended) {
+      dispatch(toggleStudentAttendance(studentId))
+    }
 
+  }
+
+  function refreshSession() {
+    dispatch(startSessionById(selectSession));
+  }
+
+  function FinalizeAttendance() {
+    dispatch(finalizeAttendance({ students: session?.attendance, sessionId: session._id }));
   }
   useEffect(() => {
     if (classes.length === 0) {
@@ -107,49 +118,69 @@ function Home() {
           <Typography variant='h5'>
             {userProfile?.name}
           </Typography>
-          <Button variant='text' sx={{ textTransform: 'capitalize' }}>
+          <Button variant='text' sx={{ textTransform: 'capitalize' }} onClick={refreshSession}>
             Refresh
           </Button>
         </Stack>
 
-        <Stack gap={3} width={700} alignItems={'start'}>
-          <TextField
-            size='small'
-            label='Class'
-            placeholder='CS-II'
-            select
-            sx={{
-              minWidth: 300,
-            }}
-            onChange={(e) => {
-              setSelectedClass(e.target.value);
-              console.log(e.target.value);
-            }}
+        <Stack
+          direction={'row'}
+          gap={5}
+          justifyContent={'space-between'}
+        >
+          <Stack gap={3} width={700} alignItems={'start'}>
+            <TextField
+              size='small'
+              label='Class'
+              placeholder='CS-II'
+              select
+              sx={{
+                minWidth: 300,
+              }}
+              onChange={(e) => {
+                setSelectedClass(e.target.value);
+                console.log(e.target.value);
+              }}
+            >
+              {classes.length > 0 && classes.map((c) => (
+                <MenuItem key={c.id} value={c.id}>
+                  {c.name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              size='small'
+              label='Sessions'
+              placeholder='Lecture'
+              select
+              sx={{
+                minWidth: 300,
+              }}
+              onChange={(e) => {
+                setSelectedSession(e.target.value);
+              }}
+            >
+              {allSessions.length > 0 && allSessions.map((s: HomeSessionType) => (
+                <MenuItem key={s.id} value={s.id}>
+                  {s.sessionName}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Stack>
+
+          <Stack
+            gap={0}
           >
-            {classes.length > 0 && classes.map((c) => (
-              <MenuItem key={c.id} value={c.id}>
-                {c.name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            size='small'
-            label='Sessions'
-            placeholder='Lecture'
-            select
-            sx={{
-              minWidth: 300,
-            }}
-            onChange={(e) => {
-              setSelectedSession(e.target.value);
-            }}
-          >
-            {allSessions.length > 0 && allSessions.map((s: HomeSessionType) => (
-              <MenuItem key={s.id} value={s.id}>
-                {s.sessionName}
-              </MenuItem>
-            ))}
-          </TextField>
+            <Typography variant='body2'>
+              Total Students: {students.length}
+            </Typography>
+            <Typography variant='body2'>
+              Present: {session?.attendance?.length}
+            </Typography>
+            <Typography variant='body2'>
+              Absent: {students.length - session?.attendance?.length}
+            </Typography>
+          </Stack>
         </Stack>
 
 
@@ -176,6 +207,7 @@ function Home() {
                 <Typography>{student.rollNumber}</Typography>
                 <Typography>{student.studentName}</Typography>
                 <Checkbox
+                  disabled={session.ended}
                   value={student.id}
                   sx={{ p: 0 }}
                   checked={session?.attendance?.includes(student.id) || false}
@@ -189,9 +221,10 @@ function Home() {
         <Button
           variant="contained"
           sx={{ mt: 2 }}
-          disabled={!selectSession}
+          disabled={(session.ended || !session._id)}
+          onClick={FinalizeAttendance}
         >
-          Confirm
+          {session.ended ? 'Ended' : 'Confirm'}
         </Button>
 
         <Button

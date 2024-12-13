@@ -85,6 +85,9 @@ const sessionSlice = createSlice({
                 state.session?.attendance?.push(action.payload)
                 console.log(state.session)
             }
+        },
+        endSession: (state) => {
+            state.session.ended = true;
         }
     },
     extraReducers(builder) {
@@ -152,5 +155,5 @@ const sessionSlice = createSlice({
 );
 
 export default sessionSlice.reducer;
-export const { toggleStudentAttendance } = sessionSlice.actions
+export const { toggleStudentAttendance, endSession } = sessionSlice.actions
 
