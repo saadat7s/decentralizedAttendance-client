@@ -10,25 +10,25 @@ import { userLogin } from '../../redux/features/authSlice';
 import { getUserProfile } from '../../redux/features/userSlice';
 
 
-
-
-interface AdminLoginValues {
+interface StudentLoginValues {
     email: string;
     password: string;
 }
 
-function AdminLogin() {
+
+function Login() {
     const { isAuthenticated, userProfile } = useSelector((state: RootState) => state.user);
     const { error, message } = useSelector((state: RootState) => state.auth);
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
-    const formik = useFormik<AdminLoginValues>({
+
+    const formik = useFormik<StudentLoginValues>({
         initialValues: {
             email: '',
             password: '',
         },
         validate: (values) => {
-            const errors: FormikErrors<AdminLoginValues> = {};
+            const errors: FormikErrors<StudentLoginValues> = {};
 
             // Email validation
             if (!values.email) {
@@ -45,48 +45,41 @@ function AdminLogin() {
             } else if (values.password.length < 6) {
                 errors.password = 'Password must be at least 6 characters';
             }
-            console.log(errors)
             return errors;
         },
         onSubmit: (values, { setSubmitting }) => {
-            console.log('Form Submitted:', values);
             toast.promise(
                 dispatch(userLogin(values))
-                    .unwrap(), {
-                loading: 'Loading...',
-                success: 'Authenticated',
-                error: error
-            }
-            )
+                    .unwrap()
+                    .then((data) => {
+                        // Store JWT token in localStorage
+                        localStorage.setItem('x_auth_token', data.token);
+                        navigate('/student/home');
+                    })
+                    .finally(() => setSubmitting(false)),
+                {
+                    loading: 'Loading...',
+                    success: 'Authenticated successfully',
+                    error: error || 'Login failed',
+                }
+            );
         },
     });
-
-    useEffect(() => {
-        const token = localStorage.getItem('x_auth_token');
-        if (token) {
-            dispatch(getUserProfile());
-        }
-        if (isAuthenticated) {
-            if (userProfile?.role === 'admin')
-                navigate('/admin/dashboard')
-        }
-    }, [isAuthenticated])
-
     return (
         <LoginForm
-            title='Welcome, Log in with your Admin Credentials'
-            subtitle='It is our great pleasure to have you on board'
+            title="Welcome, Log in with your Student Credentials"
+            subtitle="It is our great pleasure to have you on board"
             formik={formik}
             actions={
                 <Stack direction={'row'} gap={1} justifyContent={'center'}>
-                    <Typography color='secondary.contrastText' variant='body2'>
+                    <Typography color="secondary.contrastText" variant="body2">
                         Don't have an account?
                     </Typography>
-                    <Link to='/signup' style={{ textDecoration: 'none' }}>
+                    <Link to="/signup" style={{ textDecoration: 'none' }}>
                         <Typography
-                            color='primary.main'
+                            color="primary.main"
                             fontWeight={'bold'}
-                            variant='body2'
+                            variant="body2"
                             sx={{
                                 cursor: 'pointer',
                                 borderBottom: '1px solid transparent',
@@ -102,7 +95,7 @@ function AdminLogin() {
                 </Stack>
             }
         />
-    );
+    )
 }
 
-export default AdminLogin;
+export default Login

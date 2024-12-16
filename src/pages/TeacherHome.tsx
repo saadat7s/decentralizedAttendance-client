@@ -1,5 +1,6 @@
 import React from 'react'
 import Home from '../components/Teacher/Home'
+import withAuth from '../utils/withAuth'
 
 function TeacherHome() {
     return (
@@ -7,4 +8,4 @@ function TeacherHome() {
     )
 }
 
-export default TeacherHome
+export default withAuth(TeacherHome)

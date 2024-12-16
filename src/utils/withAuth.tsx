@@ -1,33 +1,50 @@
-import { jwtDecode } from "jwt-decode";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AppDispatch, RootState } from "../redux/store";
 import { getUserProfile } from "../redux/features/userSlice";
-
+import { jwtDecode } from "jwt-decode";
+import Unauthorized from "../components/Unauthorized";
 
 export default function withAuth(Component: any) {
     return function WithAuth(props: any) {
-        const { isAuthenticated } = useSelector((state: RootState) => state.user)
+        const { isAuthenticated, userProfile } = useSelector((state: RootState) => state.user);
         const dispatch = useDispatch<AppDispatch>();
         const token: string | null = localStorage.getItem('x_auth_token');
         const navigate = useNavigate();
+        const location = useLocation();
+
         useEffect(() => {
-            console.log("ENDPOINT: ", process.env.REACT_APP_ENDPOINT)
             if (!isAuthenticated && token) {
                 dispatch(getUserProfile());
-                return
+                return;
             }
             if (!token) {
-                navigate('/admin/login');
+                if (location.pathname.startsWith('/teacher')) {
+                    navigate('/teacher/login')
+                }
+                else if (location.pathname.startsWith('/student')) {
+                    navigate('/student/login')
+                }
+                else if (location.pathname.startsWith('/admin')) {
+                    navigate('/admin/login');
+                }
             }
-        }, [token])
+
+        }, [token, isAuthenticated]);
         if (isAuthenticated) {
-            return <Component {...props} />
-        }
-        if (!token && !isAuthenticated) {
-            navigate('/admin/login')
+
+            if (userProfile.role === 'teacher' && location.pathname.startsWith('/teacher')) {
+                return <Component {...props} />;
+            }
+            else if (userProfile.role === 'student' && location.pathname.startsWith('/student')) {
+                return <Component {...props} />;
+            }
+            else if (userProfile.role === 'admin' && location.pathname.startsWith('/admin')) {
+                return <Component {...props} />;
+            }
+            return <Unauthorized />;
         }
         return null;
-    }
+    };
 }

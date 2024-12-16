@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axiosInstance from "../../utils/axios/axiosInstance";
 import toast from "react-hot-toast";
+import { endSession } from "./sessionSlice";
 
 const initialState = {
     allTeachers: [],
@@ -36,6 +37,19 @@ export const getAllTeachers = createAsyncThunk<any, void, { rejectValue: { messa
     }
 )
 
+export const finalizeAttendance = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
+    'teacher/finalizeAttendance',
+    async (data: any, { rejectWithValue, dispatch }) => {
+        try {
+            const response = await axiosInstance.patch('/teacher/finalize-attendance', data);
+            dispatch(endSession()) //end the session state locally to save api call
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error.response?.data?.message });
+        }
+    }
+)
+
 const teacherSlice = createSlice({
     name: 'teacher',
     initialState: initialState,
@@ -58,6 +72,7 @@ const teacherSlice = createSlice({
             toast.error(state.error);
         })
 
+        // get all teachers builder
         builder.addCase(getAllTeachers.pending, state => {
             state.loading = true;
         })
@@ -67,6 +82,19 @@ const teacherSlice = createSlice({
             state.message = action.payload?.message;
         })
         builder.addCase(getAllTeachers.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message!
+        })
+
+        // finalize attendance builder
+        builder.addCase(finalizeAttendance.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(finalizeAttendance.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+        })
+        builder.addCase(finalizeAttendance.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message!
         })

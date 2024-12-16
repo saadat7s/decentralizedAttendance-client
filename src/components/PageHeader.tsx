@@ -8,6 +8,11 @@ import { useNavigate } from 'react-router-dom';
 function PageHeader({ actions }: { actions: React.ReactNode | null }) {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    function logoutHandler() {
+        localStorage.removeItem('x_auth_token')
+        dispatch(logoutUser({ navigate }))
+        navigate('/')
+    }
     return (
         <Stack
             direction={'row'}
@@ -34,7 +39,7 @@ function PageHeader({ actions }: { actions: React.ReactNode | null }) {
 
             <Stack alignItems={'end'}>
                 <Button
-                    onClick={() => dispatch(logoutUser({ navigate }))}
+                    onClick={logoutHandler}
                     sx={{ width: 'fit-content' }}
                     variant='contained'
                     color='error'
