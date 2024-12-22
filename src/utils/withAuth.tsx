@@ -5,6 +5,7 @@ import { AppDispatch, RootState } from "../redux/store";
 import { getUserProfile } from "../redux/features/userSlice";
 import { jwtDecode } from "jwt-decode";
 import Unauthorized from "../components/Unauthorized";
+import { CircularProgress, Stack, Typography } from "@mui/material";
 
 export default function withAuth(Component: any) {
     return function WithAuth(props: any) {
@@ -32,7 +33,20 @@ export default function withAuth(Component: any) {
             }
 
         }, [token, isAuthenticated]);
+
+
         if (isAuthenticated) {
+
+            if (!userProfile.role) {
+                return (
+                    <Stack
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                    >
+                        <CircularProgress />
+                    </Stack>
+                )
+            }
 
             if (userProfile.role === 'teacher' && location.pathname.startsWith('/teacher')) {
                 return <Component {...props} />;

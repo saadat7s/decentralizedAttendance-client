@@ -15,7 +15,7 @@ function Navbar({ children }: { children: React.ReactNode }) {
             <Stack
                 direction={'row'}
                 width={'100%'}
-                justifyContent={'center'}
+                justifyContent={'end'}
                 gap={2}
             >
                 {children}

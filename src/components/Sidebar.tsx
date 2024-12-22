@@ -13,8 +13,8 @@ function Sidebar({ username, children }: { username: string, children: React.Rea
             position={'relative'}
         >
             <Stack alignItems={'center'} p={3} >
-                <Stack overflow={'hidden'}>
-                    <img src='/logo192.png' alt='logo' style={{ maxWidth: 100, maxHeight: 'auto' }} />
+                <Stack overflow={'hidden'} bgcolor={'ActiveBorder'} borderRadius={100}>
+                    <img src='/defaultPfp.png' alt='logo' style={{ maxWidth: 100, maxHeight: 'auto' }} />
                 </Stack>
                 <Typography variant='h6' color='primary.contrastText'>
                     {username}

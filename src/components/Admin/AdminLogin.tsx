@@ -53,8 +53,11 @@ function AdminLogin() {
             toast.promise(
                 dispatch(userLogin(values))
                     .unwrap(), {
-                loading: 'Loading...',
-                success: 'Authenticated',
+                loading: "Loading...",
+                success: () => {
+                    navigate('/admin/dashboard')
+                    return 'Authenticated';
+                },
                 error: error
             }
             )

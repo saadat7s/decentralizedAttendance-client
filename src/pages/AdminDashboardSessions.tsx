@@ -36,16 +36,16 @@ function AdminDashboardSessions() {
                 <Divider />
 
                 {loading ? (
-    <p>Loading sessions...</p>
-) : error ? (
-    <p style={{ color: 'red' }}>Error: {error}</p>
-) : (
-    <RenderTable
-        tableLabels={['#', 'Class Name', 'Session Name', 'Date', 'Start Time', 'End Time']}
-    >
-        <RenderSessionsTableBody tableData={allSessions} />
-    </RenderTable>
-)}
+                    <p>Loading sessions...</p>
+                ) : error ? (
+                    <p style={{ color: 'red' }}>Error: {error}</p>
+                ) : (
+                    <RenderTable
+                        tableLabels={['#', 'Class Name', 'Session Name', 'Date']}
+                    >
+                        <RenderSessionsTableBody tableData={allSessions} />
+                    </RenderTable>
+                )}
             </Stack>
         </Wrapper>
     );

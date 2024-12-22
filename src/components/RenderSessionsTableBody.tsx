@@ -14,10 +14,10 @@ function RenderSessionsTableBody({ tableData }: { tableData: any[] | undefined }
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', { 
-            weekday: 'short', 
+        return date.toLocaleDateString('en-US', {
+            weekday: 'short',
             year: 'numeric',
-            month: 'short', 
+            month: 'short',
             day: 'numeric'
         });
     };
@@ -29,9 +29,9 @@ function RenderSessionsTableBody({ tableData }: { tableData: any[] | undefined }
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>{session.className || 'N/A'}</TableCell>
                     <TableCell>{session.sessionName}</TableCell>
-                    <TableCell>{formatDate(session.date)}</TableCell> 
-                    <TableCell>{session.startTime}</TableCell>
-                    <TableCell>{session.endTime}</TableCell>
+                    <TableCell>{formatDate(session.date)}</TableCell>
+                    {/* <TableCell>{session.startTime}</TableCell>
+                    <TableCell>{session.endTime}</TableCell> */}
                 </TableRow>
             ))}
         </TableBody>

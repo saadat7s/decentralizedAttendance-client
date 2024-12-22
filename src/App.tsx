@@ -19,6 +19,7 @@ import AdminDashboardSessions from './pages/AdminDashboardSessions';
 import AdminCreateSession from './pages/AdminCreateSession';
 import StudentHome from './pages/StudentHome';
 import Login from './components/Student/Login';
+import LandingPage from './pages/LandingPage';
 
 
 function App() {
@@ -28,6 +29,8 @@ function App() {
       {/* react router dom */}
       <BrowserRouter>
         <Routes>
+
+          <Route path='/' element={<LandingPage />} />
 
           {/* admin routes */}
           <Route path='/admin/dashboard' element={<AdminDashboard />} />
