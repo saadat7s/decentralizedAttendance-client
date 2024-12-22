@@ -41,8 +41,8 @@ export const finalizeAttendance = createAsyncThunk<any, any, { rejectValue: { me
     'teacher/finalizeAttendance',
     async (data: any, { rejectWithValue, dispatch }) => {
         try {
-            const response = await axiosInstance.patch('/teacher/finalize-attendance', data);
-            dispatch(endSession()) //end the session state locally to save api call
+            const response = await axiosInstance.patch('/teacher/finalize-attendance', data);            
+            dispatch(endSession()) 
             return response;
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data?.message });

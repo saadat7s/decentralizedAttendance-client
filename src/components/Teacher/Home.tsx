@@ -11,6 +11,7 @@ import { getAssignedClasses } from '../../redux/features/classSlice';
 import { getStudentsByClass } from '../../redux/features/studentSlice';
 import { getSessionsByClass, startSessionById, toggleStudentAttendance } from '../../redux/features/sessionSlice';
 import { finalizeAttendance } from '../../redux/features/teachersSlice';
+import toast from 'react-hot-toast';
 
 // Define a local interface for students specific to Home
 interface HomeStudentType {
@@ -54,8 +55,15 @@ function Home() {
   }
 
   function FinalizeAttendance() {
-    dispatch(finalizeAttendance({ students: session?.attendance, sessionId: session._id }));
-  }
+    dispatch(finalizeAttendance({ students: session?.attendance, sessionId: session._id }))
+    .unwrap()
+    .then(() => {
+      toast.success('Attendance finalized and broadcasted successfully!');
+    })
+    .catch((error) => {
+      toast.error(`Failed to finalize attendance: ${error.message}`);
+    });  }
+
   useEffect(() => {
     if (classes.length === 0) {
       dispatch(getAssignedClasses());
