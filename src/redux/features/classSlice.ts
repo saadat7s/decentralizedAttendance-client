@@ -3,7 +3,10 @@ import axiosInstance from "../../utils/axios/axiosInstance";
 
 interface classType {
     id: string,
-    name: string
+    name: string,
+    _id: string,
+    teacher: {name: string},
+    courseName: string
 }
 
 interface ClassState {

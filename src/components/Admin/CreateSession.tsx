@@ -1,7 +1,18 @@
-import React from 'react';
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Button, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../redux/store';
+import { getAllClasses } from '../../redux/features/classSlice';
 
 function CreateSession({ formik }: { formik: any }) {
+
+    const dispatch = useDispatch<AppDispatch>()
+    const {classes} = useSelector((state:RootState)=>state.class)
+
+
+    useEffect(()=>{
+        dispatch(getAllClasses())
+    },[dispatch])
     return (
         <form onSubmit={formik.handleSubmit}>
             <Stack gap={3} flexGrow={1}>
@@ -21,16 +32,29 @@ function CreateSession({ formik }: { formik: any }) {
                     </Typography>
                 </Stack>
                 <TextField
-                    fullWidth
-                    variant="filled"
-                    name="classId"
-                    label="Class ID"
-                    placeholder="Enter Class ID"
-                    value={formik.values.classId}
-                    onChange={formik.handleChange}
-                    error={Boolean(formik.touched.classId && formik.errors.classId)}
-                    helperText={formik.touched.classId && formik.errors.classId}
-                />
+                        select
+                        fullWidth
+                        variant='filled'
+                        name='classId'
+                        label='Class'
+                        placeholder='Class-1'
+                        onChange={formik.handleChange}
+                        error={formik.touched.classId && Boolean(formik.errors.classId)}
+                        helperText={formik.touched.classId && formik.errors.classId}
+
+                    >
+                        {classes.length > 0 &&
+                            classes.map((cls:any) => {
+                                return (
+                                    <MenuItem value={cls._id}>
+                                        {cls._id} 
+                                    </MenuItem>
+
+                                )
+                            })
+                        }
+                        <MenuItem>123</MenuItem>
+                    </TextField>
                 <TextField
                     fullWidth
                     variant="filled"

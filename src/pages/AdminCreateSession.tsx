@@ -1,16 +1,17 @@
-import React from 'react';
-import { Button, Divider, Stack, TextField, Typography } from '@mui/material';
+import React, { useEffect } from 'react';
+import { Button, Divider, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import Wrapper from '../components/Wrapper';
 import PageHeader from '../components/PageHeader';
 import AdminSidebar from './AdminSidebar';
 import { useFormik } from 'formik';
-import { useDispatch } from 'react-redux';
-import { AppDispatch } from '../redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../redux/store';
 import { createSession } from '../redux/features/sessionSlice';
 import withAuth from '../utils/withAuth';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import CreateSession from '../components/Admin/CreateSession';
+import { getAllClasses } from '../redux/features/classSlice';
 
 
 interface SessionForm {
@@ -24,6 +25,7 @@ interface SessionForm {
 function AdminCreateSession() {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
+    const {classes} = useSelector((state: RootState) => state.class)
 
     const formik = useFormik<SessionForm>({
         initialValues: {
@@ -47,6 +49,10 @@ function AdminCreateSession() {
         },
     });
 
+    useEffect(() => {
+dispatch(getAllClasses())
+    }, [dispatch])
+
     return (
         <Wrapper>
             <AdminSidebar />
@@ -68,17 +74,30 @@ function AdminCreateSession() {
                     </Typography>
                     <form onSubmit={formik.handleSubmit}>
                         <Stack gap={3}>
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                name="classId"
-                                label="Class ID"
-                                placeholder="Enter Class ID"
-                                value={formik.values.classId}
-                                onChange={formik.handleChange}
-                                error={Boolean(formik.touched.classId && formik.errors.classId)}
-                                helperText={formik.touched.classId && formik.errors.classId}
-                            />
+                            
+                <TextField
+                        select
+                        fullWidth
+                        variant='filled'
+                        name='classId'
+                        label='Class'
+                        placeholder='Class-1'
+                        onChange={formik.handleChange}
+                        error={formik.touched.classId && Boolean(formik.errors.classId)}
+                        helperText={formik.touched.classId && formik.errors.classId}
+
+                    >
+                        {classes.length > 0 &&
+                            classes.map((cls) => {
+                                return (
+                                    <MenuItem value={cls._id} key={cls._id}>
+                                        {cls.teacher.name} - {cls.courseName} 
+                                    </MenuItem>
+
+                                )
+                            })
+                        }
+                    </TextField>
                             <TextField
                                 fullWidth
                                 variant="filled"
