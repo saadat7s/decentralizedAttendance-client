@@ -14,7 +14,7 @@ const isTokenExpired = (token: string): boolean => {
 
 
 const axiosInstance = axios.create({
-    baseURL: process.env.REACT_APP_ENDPOINT,
+    baseURL: process.env.REACT_APP_ENDPOINT || "https://decentralized-attendance-server.vercel.app",
     headers: {
         "Content-Type": 'application/json'
     }
