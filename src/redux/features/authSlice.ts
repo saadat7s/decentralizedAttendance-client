@@ -14,7 +14,7 @@ export const userLogin = createAsyncThunk<any, any, { rejectValue: { message: st
     'admin/adminLogin',
     async (data: any, { rejectWithValue, dispatch }) => {
         try {
-            const response = await axios.post(`http://localhost:5000/api/auth/login`, data, {
+            const response = await axios.post(`/auth/login`, data, {
                 headers: {
                     "Content-Type": "application/json"
                 }
