@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import axiosInstance, { authAxiosInstance } from "../../utils/axios/axiosInstance"
+import axiosInstance from "../../utils/axios/axiosInstance"
 import { getUserProfile, setAuthenticated } from "./userSlice";
 import axios from "axios";
 
@@ -14,15 +14,16 @@ export const userLogin = createAsyncThunk<any, any, { rejectValue: { message: st
     'admin/adminLogin',
     async (data: any, { rejectWithValue, dispatch }) => {
         try {
-            // Use the auth axios instance that doesn't have the token interceptor
-            const response = await authAxiosInstance.post('/api/auth/login', data);
-            
+            const response = await axiosInstance.post(`/api/auth/login`, data, {
+                headers: {
+                    "Content-Type": "application/json"
+                }
+            });
             if (response.status === 200) {
-                localStorage.setItem('x_auth_token', response.data.token)
+                localStorage.setItem('x_auth_token', response?.data?.token)
                 dispatch(getUserProfile());
                 return response.data;
             }
-            return response.data;
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data?.message })
         }
