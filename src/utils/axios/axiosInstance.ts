@@ -13,21 +13,28 @@ const isTokenExpired = (token: string): boolean => {
 };
 
 
+// Create a separate instance for auth requests (no token required)
+export const authAxiosInstance = axios.create({
+    baseURL: process.env.REACT_APP_ENDPOINT || "https://decentralized-attendance-server.vercel.app",
+    headers: {
+        "Content-Type": 'application/json'
+    }
+});
+
+// Keep your original instance for authenticated requests
 const axiosInstance = axios.create({
     baseURL: process.env.REACT_APP_ENDPOINT || "https://decentralized-attendance-server.vercel.app",
     headers: {
         "Content-Type": 'application/json'
     }
-})
+});
 
+// Add interceptors only to the main instance
 axiosInstance.interceptors.request.use(async (req) => {
     const token = localStorage.getItem('x_auth_token');
 
     if (!token || isTokenExpired(token)) {
         console.error('No valid token found.');
-        //TODO: Redirect to login page
-
-        //TODO: Block the request
         return Promise.reject('No valid token found.');
     }
 
