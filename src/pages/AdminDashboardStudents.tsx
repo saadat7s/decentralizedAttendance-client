@@ -17,9 +17,7 @@ function AdminDashboardStudents() {
     const { students } = useSelector((state: RootState) => state.student);
     const dispatch = useDispatch<AppDispatch>();
     useEffect(() => {
-        if (students.length === 0) {
-            dispatch(getAllStudents())
-        }
+        dispatch(getAllStudents())
     }, [])
     return (
         <Wrapper>
