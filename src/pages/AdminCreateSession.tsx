@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Divider, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Button, Divider, FormControl, InputLabel, MenuItem, Select, Stack, TextField, Typography } from '@mui/material';
 import Wrapper from '../components/Wrapper';
 import PageHeader from '../components/PageHeader';
 import AdminSidebar from './AdminSidebar';
@@ -10,12 +10,13 @@ import { createSession } from '../redux/features/sessionSlice';
 import withAuth from '../utils/withAuth';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import CreateSession from '../components/Admin/CreateSession';
 import { getAllClasses } from '../redux/features/classSlice';
-import { DatePicker, DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
+import { DateTimePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs';
 
+// Session name options
+const SESSION_NAMES = Array.from({ length: 8 }, (_, i) => `Lecture ${i + 1}`);
 
 interface SessionForm {
     classId: string;
@@ -54,7 +55,8 @@ function AdminCreateSession() {
 
     useEffect(() => {
         dispatch(getAllClasses())
-    }, [])
+    }, [dispatch])
+
     return (
         <Wrapper>
             <AdminSidebar />
@@ -76,6 +78,7 @@ function AdminCreateSession() {
                     </Typography>
                     <form onSubmit={formik.handleSubmit}>
                         <Stack gap={3}>
+                            {/* Class Dropdown */}
                             <TextField
                                 fullWidth
                                 variant="filled"
@@ -88,42 +91,50 @@ function AdminCreateSession() {
                                 error={Boolean(formik.touched.classId && formik.errors.classId)}
                                 helperText={formik.touched.classId && formik.errors.classId}
                             >
-                                {classes.map((_class: any) => {
-                                    return (
-                                        <MenuItem value={_class._id} key={_class.courseId}>
-                                            {_class.courseId} - {_class.courseName}
-                                        </MenuItem>
-                                    )
-                                })}
+                                <MenuItem value="">
+                                    <em>Select a class</em>
+                                </MenuItem>
+                                {classes.map((_class: any) => (
+                                    <MenuItem value={_class._id} key={_class.courseId}>
+                                        {_class.courseId} - {_class.courseName}
+                                    </MenuItem>
+                                ))}
                             </TextField>
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                name="name"
-                                label="Session Name"
-                                placeholder="Enter Session Name"
-                                value={formik.values.name}
-                                onChange={formik.handleChange}
-                                error={Boolean(formik.touched.name && formik.errors.name)}
-                                helperText={formik.touched.name && formik.errors.name}
-                            />
-                            {/* <TextField
-                                fullWidth
-                                variant="filled"
-                                label={'Date'}
-                                name="date"
-                                type="datetime-local"
-                                value={formik.values.date}
-                                onChange={formik.handleChange}
-                                error={Boolean(formik.touched.date && formik.errors.date)}
-                                helperText={formik.touched.date && formik.errors.date}
-                            /> */}
 
+                            {/* Session Name Dropdown (Lecture 1-8) */}
+                            <FormControl
+                                fullWidth
+                                variant="filled"
+                                error={Boolean(formik.touched.name && formik.errors.name)}
+                            >
+                                <InputLabel>Session Name</InputLabel>
+                                <Select
+                                    name="name"
+                                    value={formik.values.name}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                >
+                                    <MenuItem value="">
+                                        <em>Select a session</em>
+                                    </MenuItem>
+                                    {SESSION_NAMES.map((sessionName) => (
+                                        <MenuItem key={sessionName} value={sessionName}>
+                                            {sessionName}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                                {formik.touched.name && formik.errors.name && (
+                                    <Typography variant="caption" color="error">
+                                        {formik.errors.name}
+                                    </Typography>
+                                )}
+                            </FormControl>
+
+                            {/* Date and Time Picker */}
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
                                 <DateTimePicker
                                     label="Date & Time"
                                     value={formik.values.dateTime === '' ? dayjs() : dayjs(formik.values.dateTime)}
-                                    // defaultValue={dayjs(new Date())}
                                     onChange={(d) => formik.setFieldValue('dateTime', d)}
                                     minDate={dayjs()}
                                     slotProps={{
@@ -132,34 +143,12 @@ function AdminCreateSession() {
                                             error: formik.touched.dateTime && Boolean(formik.errors.dateTime),
                                             helperText: formik.touched.dateTime && formik.errors.dateTime,
                                             onBlur: formik.handleBlur,
+                                            fullWidth: true
                                         },
                                     }}
                                 />
                             </LocalizationProvider>
 
-
-                            {/* <TextField
-                                fullWidth
-                                variant="filled"
-                                name="startTime"
-                                type="time"
-                                label='Start Time'
-                                value={formik.values.startTime}
-                                onChange={formik.handleChange}
-                                error={Boolean(formik.touched.startTime && formik.errors.startTime)}
-                                helperText={formik.touched.startTime && formik.errors.startTime}
-                            />
-                            <TextField
-                                fullWidth
-                                variant="filled"
-                                name="endTime"
-                                type="time"
-                                label='End Time'
-                                value={formik.values.endTime}
-                                onChange={formik.handleChange}
-                                error={Boolean(formik.touched.endTime && formik.errors.endTime)}
-                                helperText={formik.touched.endTime && formik.errors.endTime}
-                            /> */}
                             <Stack alignItems="end">
                                 <Button type="submit" variant="contained">
                                     Create Session

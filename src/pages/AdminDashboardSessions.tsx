@@ -17,7 +17,7 @@ function AdminDashboardSessions() {
     const { allSessions, loading, error } = useSelector((state: RootState) => state.session);
 
     useEffect(() => {
-        if (allSessions.length === 0) {
+        {
             dispatch(getAllSessions());
         }
     }, [])
