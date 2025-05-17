@@ -35,6 +35,11 @@ const userSlice = createSlice({
                 state.isAuthenticated = true;
             }
         },
+        clearUserProfile: (state) => {
+            state.userProfile = {};
+            console.log("User Profile Cleared", state.userProfile)
+            state.isAuthenticated = false;
+        },
         setAuthenticated: (state, action) => {
             state.isAuthenticated = action.payload;
         }
@@ -57,4 +62,4 @@ const userSlice = createSlice({
 })
 
 export default userSlice.reducer;
-export const { setUserProfile, setAuthenticated } = userSlice.actions;
+export const { setUserProfile, setAuthenticated, clearUserProfile } = userSlice.actions;

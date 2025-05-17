@@ -8,7 +8,7 @@ function LoginForm({ title, subtitle, formik, actions }: { title: string, subtit
         <Stack
             flexGrow={1}
             width={'100vw'}
-            height={'100vh'}
+            height={'80vh'}
             gap={5}
             bgcolor={'background.default'}
             justifyContent={'center'}

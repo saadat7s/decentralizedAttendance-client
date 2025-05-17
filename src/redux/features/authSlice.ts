@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axiosInstance from "../../utils/axios/axiosInstance"
-import { getUserProfile, setAuthenticated } from "./userSlice";
+import { clearUserProfile, getUserProfile, setAuthenticated, setUserProfile } from "./userSlice";
 import axios from "axios";
 
 const initialState = {
@@ -35,9 +35,9 @@ export const logoutUser = createAsyncThunk<any, any, { rejectValue: { message: s
     async (data: any, { rejectWithValue, dispatch }) => {
         try {
             const response = await axiosInstance.get('/auth/logout');
-            data.navigate('/')
             localStorage.removeItem('x_auth_token');
-            dispatch(setAuthenticated(false))
+            dispatch(clearUserProfile())
+            data.navigate('/')
             return response;
         } catch (error: any) {
             return rejectWithValue({ message: error.response?.data?.message })

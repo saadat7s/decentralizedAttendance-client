@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Link, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Grid, Link, Stack, Typography } from '@mui/material';
 import React from 'react';
 import LandingProfileCards from '../components/LandingProfileCards';
 import Navbar from '../components/Navbar';
@@ -40,20 +40,6 @@ function LandingPage() {
                     </Typography>
                 </Stack>
 
-                {/* Nav buttons */}
-                <Stack
-                    direction={'row'}
-                    gap={1}
-                >
-                    <Button variant='contained'>
-                        Login
-                    </Button>
-
-                    <Button variant='contained'>
-                        Register
-                    </Button>
-
-                </Stack>
             </Stack>
 
             {/* Banner */}
@@ -87,18 +73,20 @@ function LandingPage() {
             <Stack
                 px={15}
                 py={5}
-                bgcolor={'ActiveBorder'}
+                // bgcolor={'ActiveBorder'}
                 gap={5}
             >
                 <img
                     src='adminDashboard.png'
                     width={'100%'}
                     height={'100%'}
-                    style={{ borderTopLeftRadius: 14, borderTopRightRadius: 14 }}
+                    style={{ borderRadius: 14, border: "1px solid #ccc" }}
                     alt='a screenshot of the app'
                 />
 
             </Stack>
+
+            <Divider sx={{ width: '100%', borderColor: '#ccc' }} />
 
 
             <Grid container spacing={5} alignItems="start" px={15} py={5}>
@@ -129,7 +117,7 @@ function LandingPage() {
                     />
                 </Grid>
             </Grid>
-
+            <Divider sx={{ width: '100%', borderColor: '#ccc' }} />
 
             <Stack spacing={5} textAlign="center" py={10} px={15}>
                 <Typography variant="h4" fontWeight="bold" color="primary.main">
@@ -169,26 +157,27 @@ function LandingPage() {
                 </Grid>
             </Stack>
 
+            <Divider sx={{ width: '100%', borderColor: '#ccc' }} />
 
-            <Stack direction="row" spacing={5} justifyContent="center" flexWrap="wrap" px={15} py={10} bgcolor={'ActiveBorder'}>
+            <Stack direction="row" spacing={5} justifyContent="center" flexWrap="wrap" px={15} py={10} >
                 {[
                     {
                         title: 'Admin Profile',
                         subtitle:
                             'Admins have the power to manage users, create sessions, and ensure attendance record integrity.',
-                        image: <SupervisedUserCircle sx={{ fontSize: '100px' }} />,
+                        image: <SupervisedUserCircle sx={{ fontSize: '100px', color: "white" }} />,
                         link: '/admin/login'
                     },
                     {
                         title: 'Teacher Profile',
                         subtitle: 'Teachers can track and manage attendance in real-time using our blockchain technology.',
-                        image: <RecordVoiceOver sx={{ fontSize: '100px' }} />,
+                        image: <RecordVoiceOver sx={{ fontSize: '100px', color: "white" }} />,
                         link: '/teacher/login'
                     },
                     {
                         title: 'Student Profile',
                         subtitle: 'Students can view and verify their attendance history anytime with full transparency.',
-                        image: <School sx={{ fontSize: '100px' }} />,
+                        image: <School sx={{ fontSize: '100px', color: "white" }} />,
                         link: '/student/login'
                     },
                 ].map((profile, idx) => (

@@ -38,8 +38,6 @@ function Home() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem('x_auth_token')
-    navigate('/');
     dispatch(logoutUser({ navigate }));
   };
 

@@ -8,6 +8,7 @@ import { AppDispatch, RootState } from '../../redux/store';
 import toast from 'react-hot-toast';
 import { userLogin } from '../../redux/features/authSlice';
 import { getUserProfile } from '../../redux/features/userSlice';
+import LandingPageNav from '../LandingPageNav';
 
 
 
@@ -76,35 +77,38 @@ function AdminLogin() {
     }, [isAuthenticated])
 
     return (
-        <LoginForm
-            title='Welcome, Log in with your Admin Credentials'
-            subtitle='It is our great pleasure to have you on board'
-            formik={formik}
-            actions={
-                <Stack direction={'row'} gap={1} justifyContent={'center'}>
-                    <Typography color='secondary.contrastText' variant='body2'>
-                        Don't have an account?
-                    </Typography>
-                    <Link to='/signup' style={{ textDecoration: 'none' }}>
-                        <Typography
-                            color='primary.main'
-                            fontWeight={'bold'}
-                            variant='body2'
-                            sx={{
-                                cursor: 'pointer',
-                                borderBottom: '1px solid transparent',
-                                transition: 'all 0.2s ease',
-                                ':hover': {
-                                    borderColor: 'primary.main',
-                                },
-                            }}
-                        >
-                            Sign up
+        <Stack>
+            <LandingPageNav />
+            <LoginForm
+                title='Welcome, Log in with your Admin Credentials'
+                subtitle='It is our great pleasure to have you on board'
+                formik={formik}
+                actions={
+                    <Stack direction={'row'} gap={1} justifyContent={'center'}>
+                        <Typography color='secondary.contrastText' variant='body2'>
+                            Don't have an account?
                         </Typography>
-                    </Link>
-                </Stack>
-            }
-        />
+                        <Link to='/signup' style={{ textDecoration: 'none' }}>
+                            <Typography
+                                color='primary.main'
+                                fontWeight={'bold'}
+                                variant='body2'
+                                sx={{
+                                    cursor: 'pointer',
+                                    borderBottom: '1px solid transparent',
+                                    transition: 'all 0.2s ease',
+                                    ':hover': {
+                                        borderColor: 'primary.main',
+                                    },
+                                }}
+                            >
+                                Sign up
+                            </Typography>
+                        </Link>
+                    </Stack>
+                }
+            />
+        </Stack>
     );
 }
 

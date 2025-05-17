@@ -5,7 +5,7 @@ function LandingProfileCards({ title, subtitle, image, children }: { title: stri
     return (
         <Stack
             justifyContent={'space-between'}
-            bgcolor={'primary.contrastText'}
+            bgcolor={'primary.100'}
             height={400}
             width={400}
             borderRadius={5}

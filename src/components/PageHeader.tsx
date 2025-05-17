@@ -9,9 +9,7 @@ function PageHeader({ actions }: { actions: React.ReactNode | null }) {
     const dispatch = useDispatch<AppDispatch>();
     const navigate = useNavigate();
     function logoutHandler() {
-        localStorage.removeItem('x_auth_token')
         dispatch(logoutUser({ navigate }))
-        navigate('/')
     }
     return (
         <Stack
@@ -20,8 +18,6 @@ function PageHeader({ actions }: { actions: React.ReactNode | null }) {
             py={2}
             px={4}
             borderRadius={2}
-            // bgcolor={'secondary.100'}
-            // boxShadow={2}
             justifyContent={'space-between'}
         >
 
