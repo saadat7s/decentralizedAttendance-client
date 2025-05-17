@@ -6,6 +6,7 @@ import studentSlice from './features/studentSlice';
 import teacherSlice from "./features/teachersSlice";
 import classSlice from "./features/classSlice";
 import sessionSlice from "./features/sessionSlice"
+import dashboardSlice from "./features/dashboardSlice";
 
 
 export const store = configureStore({
@@ -17,6 +18,7 @@ export const store = configureStore({
         teacher: teacherSlice,
         class: classSlice,
         session: sessionSlice,
+        dashboard: dashboardSlice,
     }
 })
 

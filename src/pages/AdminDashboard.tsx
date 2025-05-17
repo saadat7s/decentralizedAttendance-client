@@ -5,12 +5,21 @@ import PageHeader from '../components/PageHeader'
 import { AccountBalance, CastForEducation, Face2, School } from '@mui/icons-material'
 import EmptyDashboardCard from '../components/EmptyDashboardCard'
 import AdminSidebar from './AdminSidebar'
-import { useSelector } from 'react-redux'
-import { RootState } from '../redux/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { AppDispatch, RootState } from '../redux/store'
 import withAuth from '../utils/withAuth'
+import { useEffect } from 'react'
+import { fetchDashboardStats } from '../redux/features/dashboardSlice'
+
 
 function AdminDashboard() {
     const { userProfile } = useSelector((state: RootState) => state.user)
+    const { stats: { classes, sessions, students, teachers } } = useSelector((state: RootState) => state.dashboard)
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(fetchDashboardStats());
+    }, [])
     return (
         <Wrapper>
 
@@ -101,7 +110,7 @@ function AdminDashboard() {
                                 Teachers
                             </Typography>
                             <Typography>
-                                15
+                                {teachers}
                             </Typography>
                         </Stack>
 
@@ -110,7 +119,7 @@ function AdminDashboard() {
                                 Students
                             </Typography>
                             <Typography>
-                                15
+                                {students}
                             </Typography>
                         </Stack>
 
@@ -119,7 +128,7 @@ function AdminDashboard() {
                                 Classes
                             </Typography>
                             <Typography>
-                                15
+                                {classes}
                             </Typography>
                         </Stack>
 
@@ -128,7 +137,7 @@ function AdminDashboard() {
                                 Sessions
                             </Typography>
                             <Typography>
-                                15
+                                {sessions}
                             </Typography>
                         </Stack>
 
