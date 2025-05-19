@@ -9,7 +9,6 @@ function TeacherNavbar() {
 
                 <NavItemsRegular title='Home' link='/teacher/home' />
                 <NavItemsRegular title='Details' link='/teacher/details' />
-                <NavItemsRegular title='Students' link='/teacher/students' />
 
             </Navbar>
         </>
