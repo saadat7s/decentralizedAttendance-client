@@ -9,15 +9,30 @@ interface StudentState {
     loading: boolean;
     message: string;
     error: string;
+    studentAttendance: {};
 }
 
 const initialState: StudentState = {
     students: [],
+    studentAttendance: {},
 
     loading: false,
     message: '',
     error: ''
 }
+
+export const getStudentReports = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'student/getStudentReports',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get(`/student/attendance`);
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.response?.data?.message || 'Error fetching student reports' });
+        }
+    }
+);
+
 export const addStudent = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
     'student/addStudent',
     async (data: any, { rejectWithValue }) => {
@@ -125,6 +140,20 @@ const studentSlice = createSlice({
         builder.addCase(markAttendance.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message!
+        })
+
+        builder.addCase(getStudentReports.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getStudentReports.fulfilled, (state, action) => {
+            state.loading = false;
+            state.message = action.payload?.message;
+            state.studentAttendance = action.payload?.attendanceByClass || {};
+        })
+        builder.addCase(getStudentReports.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message!;
+            toast.error(state.error);
         })
     },
 }

@@ -20,6 +20,8 @@ import AdminCreateSession from './pages/AdminCreateSession';
 import StudentHome from './pages/StudentHome';
 import Login from './components/Student/Login';
 import LandingPage from './pages/LandingPage';
+import StudentReports from './pages/StudentReports';
+import TeacherDetails from './pages/TeacherDetails';
 
 
 function App() {
@@ -48,12 +50,12 @@ function App() {
 
           <Route path='/teacher/login' element={<TeacherLogin />} />
           <Route path='/teacher/home' element={<TeacherHome />} />
-          <Route path='/teacher/details' element={<TeacherHome />} />
+          <Route path='/teacher/details' element={<TeacherDetails />} />
           <Route path='/teacher/students' element={<TeacherHome />} />
 
           <Route path='/student/login' element={<Login />} />
           <Route path='/student/home' element={<StudentHome />} />
-          <Route path='/student/reports' element={<StudentHome />} />
+          <Route path='/student/reports' element={<StudentReports />} />
 
 
           <Route path='/signup' element={<Register />} />

@@ -5,11 +5,24 @@ import { endSession } from "./sessionSlice";
 
 const initialState = {
     allTeachers: [],
+    attendanceSummary: [],
 
     loading: false,
     message: '',
     error: ''
 }
+
+export const getAllAttendance = createAsyncThunk<any, void, { rejectValue: { message: string } }>(
+    'teacher/getAllAttendance',
+    async (_, { rejectWithValue }) => {
+        try {
+            const response = await axiosInstance.get('/teacher/attendance/summary');
+            return response;
+        } catch (error: any) {
+            return rejectWithValue({ message: error?.response?.data?.message })
+        }
+    }
+)
 
 // register teacher call
 export const registerTeacher = createAsyncThunk<any, any, { rejectValue: { message: string } }>(
@@ -95,6 +108,20 @@ const teacherSlice = createSlice({
             state.message = action.payload?.message;
         })
         builder.addCase(finalizeAttendance.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.payload?.message!
+        })
+
+        // get all attendance builder
+        builder.addCase(getAllAttendance.pending, state => {
+            state.loading = true;
+        })
+        builder.addCase(getAllAttendance.fulfilled, (state, action) => {
+            state.loading = false;
+            state.attendanceSummary = action.payload?.summary;
+            state.message = action.payload?.message;
+        })
+        builder.addCase(getAllAttendance.rejected, (state, action) => {
             state.loading = false;
             state.error = action.payload?.message!
         })
